@@ -1,0 +1,25 @@
+/* Panel Apps — small, scoped style rules.
+ *
+ * Rules are kept minimal and scoped so they respect the active GNOME theme and
+ * display scaling.
+ */
+
+.panel-apps-indicator {
+  spacing: 2px;
+}
+
+.panel-apps-app-button {
+  padding: 0 2px;
+}
+
+.panel-apps-menu-button {
+  padding: 0 2px;
+}
+
+.panel-apps-running-dot {
+  width: 6px;
+  height: 2px;
+  border-radius: 1px;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+

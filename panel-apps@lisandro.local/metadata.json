@@ -1,0 +1,9 @@
+{
+  "uuid": "panel-apps@lisandro.local",
+  "name": "Panel Apps",
+  "description": "Pin favourite applications to the top panel. Search installed apps in Preferences and click an icon to launch or focus it.",
+  "shell-version": ["50"],
+  "settings-schema": "org.gnome.shell.extensions.panel-apps",
+  "version-name": "0.1.0",
+  "original-authors": ["lisandro@local"]
+}

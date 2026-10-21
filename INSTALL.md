@@ -1,0 +1,93 @@
+# Panel Apps — Installation
+
+Steps to install the **Panel Apps** extension (UUID `panel-apps@lisandro.local`)
+for GNOME Shell 50 on Fedora Workstation (Wayland).
+
+No root privileges are required — everything installs under `~/.local`.
+
+## 1. Prerequisites
+
+- Fedora Workstation on **Wayland**
+- GNOME Shell **50** (tested on 50.5)
+
+## 2. Install (development, from this checkout)
+
+Run these from the project root (the directory that contains
+`panel-apps@lisandro.local/`):
+
+```sh
+# 2a. Compile the GSettings schema (strict)
+glib-compile-schemas --strict panel-apps@lisandro.local/schemas/
+
+# 2b. Link the extension into the per-user extensions directory
+ln -s "$PWD/panel-apps@lisandro.local" \
+    ~/.local/share/gnome-shell/extensions/panel-apps@lisandro.local
+
+# 2c. Make the schema visible to the running session
+mkdir -p ~/.local/share/glib-2.0/schemas
+cp panel-apps@lisandro.local/schemas/org.gnome.shell.extensions.panel-apps.gschema.xml \
+    ~/.local/share/glib-2.0/schemas/
+glib-compile-schemas ~/.local/share/glib-2.0/schemas/
+```
+
+> **Important:** GNOME Shell only scans the extensions directory **at
+> startup**. If the extension was added while the Shell was already running,
+> you must **log out and log back in** before it is discoverable. On Wayland
+> there is no safe in-place reload (do not use Alt+F2 → `r`).
+
+## 3. Enable and open preferences
+
+After logging back in:
+
+```sh
+gnome-extensions enable panel-apps@lisandro.local
+gnome-extensions prefs panel-apps@lisandro.local
+```
+
+Then:
+1. Open **Preferences → Applications**.
+2. Search an app and toggle its switch to pin it.
+3. Use **Move Up / Move Down** to reorder; configure placement, icon size,
+   running dot and maximum visible apps under **Preferences → Panel**.
+
+## 4. Install (packaged `.zip`, no dev checkout)
+
+Build the bundle and install it:
+
+```sh
+glib-compile-schemas --strict panel-apps@lisandro.local/schemas/
+gnome-extensions pack --force \
+    --extra-source=appCatalog.js \
+    --extra-source=panelApps.js \
+    --extra-source=settings.js \
+    panel-apps@lisandro.local
+
+gnome-extensions install panel-apps@lisandro.local.shell-extension.zip
+```
+
+`metadata.json`, `extension.js`, `prefs.js`, `stylesheet.css` and `schemas/`
+are packed automatically; only the extra JS modules need `--extra-source`.
+`gnome-extensions install` compiles the schema on install.
+
+Then log out/in and enable as in step 3.
+
+## 5. Uninstall
+
+```sh
+gnome-extensions uninstall panel-apps@lisandro.local
+
+# If you used the development install, also remove the symlink and schema:
+rm -f ~/.local/share/gnome-shell/extensions/panel-apps@lisandro.local
+rm -f ~/.local/share/glib-2.0/schemas/org.gnome.shell.extensions.panel-apps.gschema.xml
+glib-compile-schemas ~/.local/share/glib-2.0/schemas/
+```
+
+## 6. Troubleshooting
+
+- **`gnome-extensions enable` says "does not exist"** — the running Shell
+  started before the extension existed. Log out and log back in.
+- **`gnome-extensions prefs` prints usage** — the command is `prefs`
+  (not `pref`).
+- **To verify it loaded** — `gnome-extensions info panel-apps@lisandro.local`
+  should show `State: ACTIVE`.
+- **To watch for errors** — `journalctl --user -f -o cat | grep -i panel-apps`.
