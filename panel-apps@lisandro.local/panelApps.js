@@ -1,9 +1,8 @@
-// panelApps.js — panel container, per-app icon buttons, context menus,
-// running state and overflow.
+// panelApps.js — panel container, per-app icon buttons and context menus.
 //
 // Runs inside the GNOME Shell process. The container is a PanelMenu.Button
-// because Main.panel.addToStatusArea() requires it; its menu is the overflow
-// menu, and each pinned app is its own interactive St.Button.
+// because Main.panel.addToStatusArea() requires it; each pinned app is its
+// own interactive St.Button shown directly in the panel.
 
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
@@ -17,14 +16,11 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
 import {
     normalizeIconSize,
-    normalizeMaxVisibleApps,
     normalizePanelBox,
     normalizePanelPosition,
-    partitionPinned,
 } from './settings.js';
 
 const FALLBACK_ICON_NAME = 'application-x-executable-symbolic';
-const MENU_ICON_NAME = 'view-app-grid-symbolic';
 
 const AppButton = GObject.registerClass(
 class AppButton extends St.Button {
@@ -146,27 +142,13 @@ class PanelApps extends PanelMenu.Button {
         this._connections = [];
         this._rebuildTimeout = 0;
 
-        // Disable the built-in "any click toggles the menu" gesture so that
-        // clicks on child app buttons never open the overflow menu.
+        // There is no dropdown menu: app icons launch/focus their application
+        // directly. Keep the inherited PanelMenu.Button click gesture disabled
+        // so it never toggles an empty menu.
         this._clickGesture.set_enabled(false);
 
         this._box = new St.BoxLayout({ style_class: 'panel-apps-indicator' });
         this.add_child(this._box);
-
-        this._menuButton = new St.Button({
-            style_class: 'panel-apps-menu-button',
-            reactive: true,
-            can_focus: true,
-            track_hover: true,
-            accessible_name: 'Panel Apps',
-        });
-        this._menuButton.add_child(new St.Icon({
-            icon_name: MENU_ICON_NAME,
-            icon_size: 16,
-            style_class: 'system-status-icon',
-        }));
-        this._menuButton.connect('clicked', () => this.menu.toggle());
-        this._box.add_child(this._menuButton);
     }
 
     enable() {
@@ -191,7 +173,6 @@ class PanelApps extends PanelMenu.Button {
     _connectSignals() {
         const s = this._settings;
         this._connect(s, 'changed::pinned-apps', () => this._rebuild());
-        this._connect(s, 'changed::max-visible-apps', () => this._rebuild());
         this._connect(s, 'changed::icon-size', () => this._applyIconSize());
         this._connect(s, 'changed::show-running-indicator', () => this._applyRunningIndicator());
 
@@ -245,13 +226,11 @@ class PanelApps extends PanelMenu.Button {
         }
         this._buttons.clear();
 
-        const maxVisible = normalizeMaxVisibleApps(this._settings.get_int('max-visible-apps'));
         const iconSize = normalizeIconSize(this._settings.get_int('icon-size'));
         const showRunning = this._settings.get_boolean('show-running-indicator');
 
-        // Resolve pinned IDs to Shell.App, keeping only installed + eligible apps.
-        const appById = new Map();
-        const availableIds = new Set();
+        // Resolve pinned IDs to Shell.App, keeping only installed + eligible
+        // apps, and render each one as a panel icon (no overflow menu).
         for (const id of this._pinnedIds()) {
             const app = this._catalog.lookupApp(id);
             if (!app)
@@ -259,41 +238,15 @@ class PanelApps extends PanelMenu.Button {
             const appInfo = app.get_app_info();
             if (appInfo && !this._catalog.isEligible(appInfo))
                 continue; // unavailable or hidden by parental controls
-            availableIds.add(id);
-            appById.set(id, app);
-        }
 
-        const { visible, overflow } = partitionPinned(this._pinnedIds(), availableIds, maxVisible);
-
-        for (const id of visible) {
-            const button = new AppButton(appById.get(id), {
+            const button = new AppButton(app, {
                 iconSize,
                 showRunningIndicator: showRunning,
                 onUnpin: id => this._unpin(id),
             });
             this._buttons.set(id, button);
-            // Insert before the always-last menu button.
-            this._box.insert_child_at_index(button, this._box.get_n_children() - 1);
+            this._box.add_child(button);
         }
-
-        this._rebuildMenuButton(overflow.map(id => appById.get(id)));
-    }
-
-    _rebuildMenuButton(overflowApps) {
-        this.menu.removeAll();
-        for (const app of overflowApps) {
-            const item = new PopupMenu.PopupMenuItem(app.get_name());
-            item.connect('activate', () => {
-                try {
-                    app.activate();
-                } catch (e) {
-                    logError(e, 'panel-apps: application activation failed');
-                }
-            });
-            this.menu.addMenuItem(item);
-        }
-        if (overflowApps.length > 0)
-            this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem(''));
     }
 
     _unpin(id) {

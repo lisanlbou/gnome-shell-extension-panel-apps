@@ -36,12 +36,5 @@
       running.</description>
     </key>
 
-    <key name="max-visible-apps" type="i">
-      <default>8</default>
-      <summary>Maximum visible apps</summary>
-      <description>Maximum number of app icons shown before an overflow menu
-      is used, between 1 and 20.</description>
-    </key>
-
   </schema>
 </schemalist>

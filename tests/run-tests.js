@@ -45,11 +45,6 @@ eq(S.normalizeIconSize(8), 16, 'icon size below min -> 16');
 eq(S.normalizeIconSize(64), 32, 'icon size above max -> 32');
 eq(S.normalizeIconSize(24), 24, 'icon size within range');
 
-// normalizeMaxVisibleApps
-eq(S.normalizeMaxVisibleApps(0), 1, 'max visible below min -> 1');
-eq(S.normalizeMaxVisibleApps(100), 20, 'max visible above max -> 20');
-eq(S.normalizeMaxVisibleApps(8), 8, 'max visible within range');
-
 // normalizePanelPosition
 eq(S.normalizePanelPosition(-3), 0, 'negative position -> 0');
 eq(S.normalizePanelPosition(2.9), 2, 'fractional position floored');
@@ -72,24 +67,6 @@ eq(S.moveItem(['a', 'b', 'c'], 2, 0), ['c', 'a', 'b'], 'move last to first');
 eq(S.moveItem(['a', 'b', 'c'], 1, 1), ['a', 'b', 'c'], 'move no-op');
 eq(S.moveItem(['a', 'b', 'c'], 0, 99), ['b', 'c', 'a'], 'move clamps target');
 eq(S.moveItem(['a', 'b', 'c'], 5, 0), ['a', 'b', 'c'], 'move invalid from');
-
-// partitionPinned
-{
-    const r = S.partitionPinned(['a', 'b', 'c', 'd', 'e'], new Set(['a', 'c', 'd', 'e']), 3);
-    eq(r.visible, ['a', 'c', 'd'], 'partition visible up to max');
-    eq(r.overflow, ['e'], 'partition overflow beyond max');
-    eq(r.missing, ['b'], 'partition missing not in available set');
-}
-{
-    const r = S.partitionPinned(['x', 'y'], new Set(['y']), 2);
-    eq(r.visible, ['y'], 'partition only available visible');
-    eq(r.overflow, [], 'partition no overflow');
-    eq(r.missing, ['x'], 'partition missing retained');
-}
-{
-    const r = S.partitionPinned(['a', 'a', 'b'], new Set(['a', 'b']), 5);
-    eq(r.visible, ['a', 'b'], 'partition dedupes input');
-}
 
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed > 0)

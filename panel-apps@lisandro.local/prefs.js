@@ -6,7 +6,7 @@ import GLib from 'gi://GLib';
 import Gtk from 'gi://Gtk?version=4.0';
 import Adw from 'gi://Adw';
 import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
-import { dedupeDesktopIds, moveItem, normalizeIconSize, normalizeMaxVisibleApps, normalizePanelBox, normalizePanelPosition } from './settings.js';
+import { dedupeDesktopIds, moveItem, normalizeIconSize, normalizePanelBox, normalizePanelPosition } from './settings.js';
 
 const ICON_PIXEL_SIZE = 24;
 
@@ -299,21 +299,6 @@ export default class PanelAppsPreferences extends ExtensionPreferences {
             this._settings.set_int('icon-size', Math.round(iconSizeRow.value));
         });
         appearance.add(iconSizeRow);
-
-        const maxVisibleRow = new Adw.SpinRow({
-            title: 'Maximum visible apps',
-            subtitle: 'Extra apps go into the overflow menu.',
-            adjustment: new Gtk.Adjustment({
-                lower: 1,
-                upper: 20,
-                step_increment: 1,
-            }),
-            value: normalizeMaxVisibleApps(this._settings.get_int('max-visible-apps')),
-        });
-        maxVisibleRow.connect('notify::value', () => {
-            this._settings.set_int('max-visible-apps', Math.round(maxVisibleRow.value));
-        });
-        appearance.add(maxVisibleRow);
 
         const runningRow = new Adw.SwitchRow({
             title: 'Running indicator',

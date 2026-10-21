@@ -10,8 +10,6 @@ export const PANEL_BOXES = Object.freeze(['left', 'center', 'right']);
 export const LIMITS = Object.freeze({
     iconSizeMin: 16,
     iconSizeMax: 32,
-    maxVisibleAppsMin: 1,
-    maxVisibleAppsMax: 20,
 });
 
 export const DEFAULTS = Object.freeze({
@@ -19,7 +17,6 @@ export const DEFAULTS = Object.freeze({
     panelPosition: 0,
     iconSize: 16,
     showRunningIndicator: true,
-    maxVisibleApps: 8,
 });
 
 /** Clamp a number into [min, max]; non-finite input falls back to min. */
@@ -38,11 +35,6 @@ export function normalizePanelBox(value) {
 /** Validate/bound an icon size value. */
 export function normalizeIconSize(value) {
     return clamp(value, LIMITS.iconSizeMin, LIMITS.iconSizeMax);
-}
-
-/** Validate/bound the maximum number of visible apps. */
-export function normalizeMaxVisibleApps(value) {
-    return clamp(value, LIMITS.maxVisibleAppsMin, LIMITS.maxVisibleAppsMax);
 }
 
 /** Validate/bound a panel position index (must be a non-negative integer). */
@@ -93,28 +85,4 @@ export function moveItem(array, from, to) {
     const [item] = result.splice(from, 1);
     result.splice(target, 0, item);
     return result;
-}
-
-/**
- * Split a deduplicated list of pinned desktop IDs into `visible`, `overflow`
- * and `missing` groups, given the set of currently available IDs and the
- * maximum number of visible icons. Missing IDs are retained (not dropped) so
- * callers can mark them unavailable in the preferences UI.
- */
-export function partitionPinned(pinnedIds, availableIds, maxVisible) {
-    const available = availableIds instanceof Set
-        ? availableIds
-        : new Set(availableIds);
-    const max = clamp(maxVisible, LIMITS.maxVisibleAppsMin, LIMITS.maxVisibleAppsMax);
-    const visible = [];
-    const overflow = [];
-    const missing = [];
-    for (const id of dedupeDesktopIds(pinnedIds)) {
-        if (!available.has(id)) {
-            missing.push(id);
-            continue;
-        }
-        (visible.length < max ? visible : overflow).push(id);
-    }
-    return { visible, overflow, missing };
 }

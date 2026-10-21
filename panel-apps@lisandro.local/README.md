@@ -13,7 +13,7 @@ icon to launch or focus its application.
 
 - [x] Milestone 1 — environment & skeleton
 - [x] Milestone 2 — application catalogue & searchable picker
-- [x] Milestone 3 — panel icons (launch/focus, running dot, menus, overflow)
+- [x] Milestone 3 — panel icons (launch/focus, running dot, menus)
 - [x] Milestone 4 — robustness & compatibility hardening
 - [x] Milestone 5 — packaging, documentation & tests
 
@@ -77,8 +77,8 @@ Install the resulting `panel-apps@lisandro.local.shell-extension.zip` with
 3. Toggle an application's switch to pin it; use Move Up/Move Down to reorder.
 4. Left-click a panel icon to launch or focus the app (no new instance).
 5. Right-click an icon for Open New Window (when supported) and Unpin.
-6. Configure placement, icon size, running dot and maximum visible apps under
-   Preferences → Panel. Extra apps go into the overflow menu.
+6. Configure placement, icon size and the running dot under
+   Preferences → Panel.
 
 ## Settings
 
@@ -89,7 +89,6 @@ Install the resulting `panel-apps@lisandro.local.shell-extension.zip` with
 | `panel-position` | `i` | `0` | index within the selected box |
 | `icon-size` | `i` | `16` | logical size, 16–32 |
 | `show-running-indicator` | `b` | `true` | dot under running apps |
-| `max-visible-apps` | `i` | `8` | before overflow, 1–20 |
 
 ## Debugging
 
@@ -99,8 +98,8 @@ Install the resulting `panel-apps@lisandro.local.shell-extension.zip` with
 
 ## Testing
 
-Run the pure-logic tests with `gjs -m tests/run-tests.js` (35 checks: desktop-ID
-dedupe/order, missing-entry partition, settings validation).
+Run the pure-logic tests with `gjs -m tests/run-tests.js` (25 checks: desktop-ID
+dedupe/order and settings validation).
 
 Verified on GNOME Shell 50.5 (headless nested Wayland session):
 
