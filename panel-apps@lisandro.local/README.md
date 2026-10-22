@@ -129,6 +129,13 @@ scaling, lock/unlock, suspend/resume, and coexistence with AppIndicator.
 - GNOME 51: not tested here (no 51 install). Code uses the 51-safe
   `St.BoxLayout.orientation` API and `PopupMenu.toggle()` (no open/close args),
   but 51 must be validated separately before being listed as supported.
+- **Private API (`Main.panel.menuManager`):** each app icon's right-click menu is
+  a `PopupMenu.PopupMenu` registered via `Main.panel.menuManager.addMenu()` (a
+  private `PopupMenu.PopupMenuManager` from `ui/panel.js`). This lets the panel
+  coordinate open/close state, keyboard navigation and dismissal the same way
+  `addToStatusArea()` registers a `PanelMenu.Button`'s own menu. It is valid for
+  the declared `shell-version` `["50"]` and must be re-checked before any future
+  GNOME major is listed as supported.
 
 ## License
 

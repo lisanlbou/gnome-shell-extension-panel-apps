@@ -25,6 +25,7 @@ export default class PanelAppsExtension extends Extension {
 
     _recreate() {
         this._panelApps.destroy();
+        this._panelApps = null;
         this._panelApps = new PanelApps(this._settings, this._catalog);
         this._panelApps.enable();
     }

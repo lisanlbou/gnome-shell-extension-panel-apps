@@ -47,18 +47,19 @@ export default class PanelAppsPreferences extends ExtensionPreferences {
     _loadApps() {
         const apps = [];
         for (const info of Gio.AppInfo.get_all()) {
+            let id, name, gicon;
             try {
-                info.get_id(); // catch invalid file encodings
+                // get_name()/get_icon() read localized strings that can throw
+                // on non-UTF-8 .desktop files; skip those entries.
+                id = info.get_id();
+                name = info.get_name();
+                gicon = info.get_icon();
             } catch (e) {
                 continue;
             }
             if (!info.should_show())
                 continue;
-            apps.push({
-                id: info.get_id(),
-                name: info.get_name(),
-                gicon: info.get_icon(),
-            });
+            apps.push({ id, name, gicon });
         }
         apps.sort((a, b) => a.name.localeCompare(b.name));
         return apps;

@@ -81,6 +81,14 @@ const AppButton = GObject.registerClass({
             this._menu = new PopupMenu.PopupMenu(this, 0.5, St.Side.TOP);
             Main.uiGroup.add_child(this._menu.actor);
             this._menu.actor.hide();
+
+            // These app buttons are plain St.Button (not PanelMenu.Button), so
+            // their menus are not auto-registered by the panel. Registering the
+            // menu with Main.panel.menuManager (a private PopupMenuManager from
+            // ui/panel.js) lets the panel coordinate open/close state, keyboard
+            // navigation and dismissal, exactly as addToStatusArea() does for a
+            // PanelMenu.Button's own menu. This is a GNOME 50 API pinned by
+            // metadata shell-version and must be re-checked for later majors.
             Main.panel.menuManager.addMenu(this._menu);
 
             if (this._app.can_open_new_window()) {
@@ -201,7 +209,7 @@ export const PanelApps = GObject.registerClass({
 
     _debounceRebuild() {
         if (this._rebuildTimeout)
-            GLib.source_remove(this._rebuildTimeout);
+            GLib.Source.remove(this._rebuildTimeout);
         this._rebuildTimeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 250, () => {
             this._rebuildTimeout = 0;
             this._rebuild();
@@ -258,7 +266,7 @@ export const PanelApps = GObject.registerClass({
 
     _onDestroy() {
         if (this._rebuildTimeout) {
-            GLib.source_remove(this._rebuildTimeout);
+            GLib.Source.remove(this._rebuildTimeout);
             this._rebuildTimeout = 0;
         }
         for (const [emitter, id] of this._connections)
