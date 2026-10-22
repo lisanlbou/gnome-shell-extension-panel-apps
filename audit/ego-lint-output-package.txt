@@ -1,0 +1,274 @@
+================================================================
+  ego-lint — GNOME Shell Extension Compliance Checker
+================================================================
+
+Extension: /tmp/panel-apps@lisandro.local
+
+[PASS] compiled-typescript                    No transpiler artifacts detected
+[PASS] file-structure/extension.js            extension.js exists
+[PASS] file-structure/metadata.json           metadata.json exists
+[PASS] license                                License file found (appears GPL-compatible)
+[PASS] no-console-log                         No console.log() calls found
+[PASS] no-deprecated-modules                  No deprecated module imports found
+[PASS] no-binary-files                        No binary files found
+[PASS] non-gjs-scripts                        No non-GJS scripts found
+[PASS] script-permissions                     All shell scripts have execute permission (or no shell scripts found)
+[PASS] polkit-files                           No polkit policy files found
+[SKIP] polkit/action-id-match                 No polkit files found
+[SKIP] polkit/action-id-prefix                No polkit files found
+[SKIP] polkit/helper-exists                   No polkit files found
+[PASS] minified-js                            No minified or bundled JavaScript detected
+[PASS] css/scoping                            CSS classes appear properly scoped
+[PASS] css/important                          No !important usage
+[PASS] css/shell-class-override               No unscoped GNOME Shell theme class overrides
+[PASS] accessibility/accessible-name          All St.Button instances have labels or accessible_name
+[PASS] accessibility/widget-role              All custom St.Widget subclasses have accessible_role or no custom widgets found
+[SKIP] R-WEB-01                               Not applicable for declared shell-version(s)
+[SKIP] R-WEB-02                               Not applicable for declared shell-version(s)
+[PASS] R-WEB-03                               No matches
+[PASS] R-WEB-04                               No matches
+[PASS] R-WEB-05                               No matches
+[PASS] R-WEB-06                               No matches
+[PASS] R-WEB-07                               No matches
+[PASS] R-WEB-08                               No matches
+[PASS] R-WEB-09                               No matches
+[SKIP] R-WEB-10                               Not applicable for declared shell-version(s)
+[SKIP] R-WEB-11                               Not applicable for declared shell-version(s)
+[PASS] R-WEB-12                               No matches
+[PASS] R-DEPR-04                              No matches
+[SKIP] R-DEPR-04-legacy                       Not applicable for declared shell-version(s)
+[PASS] R-DEPR-05                              No matches
+[PASS] R-DEPR-06                              No matches
+[PASS] R-DEPR-07                              No matches
+[PASS] R-DEPR-08                              No matches
+[PASS] R-DEPR-09                              No matches
+[PASS] R-DEPR-10                              No matches
+[PASS] R-DEPR-11                              No matches
+[PASS] R-IMPORT-08                            No matches
+[PASS] R-SEC-01                               No matches
+[PASS] R-SEC-02                               No matches
+[PASS] R-SEC-03                               No matches
+[PASS] R-SEC-04                               No matches
+[PASS] R-SEC-05                               No matches
+[PASS] R-SEC-06                               No matches
+[PASS] R-SEC-08                               No matches
+[PASS] R-SEC-09                               No matches
+[PASS] R-SEC-13                               No matches
+[PASS] R-SEC-17                               No matches
+[PASS] R-SEC-20                               No matches
+[PASS] R-SEC-23                               No matches
+[PASS] R-SEC-14                               No matches
+[PASS] R-SEC-15                               No matches
+[PASS] R-SEC-21                               No matches
+[PASS] R-SEC-22                               No matches
+[PASS] R-SEC-10                               No matches
+[PASS] R-SEC-11                               No matches
+[PASS] R-SEC-12                               No matches
+[PASS] R-PREFS-04                             No matches
+[PASS] R-PREFS-04b                            No matches
+[WARN] R-PREFS-04c                            GTK layout widget in prefs.js — verify no Adw equivalent for this specific use case in 1 file(s): prefs.js
+[PASS] R-I18N-01                              No matches
+[PASS] R-I18N-02                              No matches
+[PASS] R-LOG-02                               No matches
+[PASS] R-LOG-03                               No matches
+[PASS] R-QUAL-23                              No matches
+[PASS] R-SLOP-01                              No matches
+[PASS] R-SLOP-02                              No matches
+[PASS] R-SLOP-05                              No matches
+[PASS] R-SLOP-06                              No matches
+[PASS] R-SLOP-07                              No matches
+[PASS] R-SLOP-13                              No matches
+[PASS] R-SLOP-17                              No matches
+[PASS] R-SLOP-18                              No matches
+[PASS] R-SLOP-19                              No matches
+[PASS] R-SLOP-22                              No matches
+[PASS] R-SLOP-23                              No matches
+[PASS] R-SLOP-27                              No matches
+[PASS] R-SLOP-28                              No matches
+[PASS] R-SLOP-29                              No matches
+[PASS] R-SLOP-29b                             No matches
+[PASS] R-SLOP-30                              No matches
+[PASS] R-SLOP-35                              No matches
+[PASS] R-SLOP-38                              No matches
+[PASS] R-SLOP-40                              No matches
+[PASS] R-SLOP-43                              No matches
+[PASS] R-SLOP-08                              No matches
+[PASS] R-SLOP-09                              No matches
+[PASS] R-SLOP-10                              No matches
+[PASS] R-SLOP-11                              No matches
+[WARN] R-SLOP-44                              Non-idiomatic GLib C-binding — use GLib.Source.remove() in 1 file(s): panelApps.js
+[PASS] R-SLOP-16                              No matches
+[PASS] R-SLOP-24                              No matches
+[PASS] R-SLOP-25                              No matches
+[PASS] R-QUAL-04b                             No matches
+[PASS] R-QUAL-25                              No matches
+[PASS] R-QUAL-26                              No matches
+[PASS] R-QUAL-27                              No matches
+[PASS] R-QUAL-27b                             No matches
+[PASS] R-QUAL-30                              No matches
+[WARN] R-QUAL-31                              panelApps.js:127: _onDestroy() should be renamed to destroy() with super.destroy() at the end
+[WARN] R-QUAL-31                              panelApps.js:259: _onDestroy() should be renamed to destroy() with super.destroy() at the end
+[PASS] R-QUAL-32                              No matches
+[PASS] R-QUAL-33                              No matches
+[PASS] R-QUAL-34                              No matches
+[PASS] R-QUAL-35                              No matches
+[PASS] R-QUAL-36                              No matches
+[PASS] R-VER44-01                             No matches
+[PASS] R-VER44-02                             No matches
+[PASS] R-VER46-01                             No matches
+[PASS] R-VER46-02                             No matches
+[PASS] R-VER46-03                             No matches
+[PASS] R-VER46-04                             No matches
+[PASS] R-VER46-05                             No matches
+[PASS] R-VER46-06                             No matches
+[PASS] R-VER46-07                             No matches
+[PASS] R-VER47-01                             No matches
+[PASS] R-VER48-01                             No matches
+[PASS] R-VER48-02                             No matches
+[PASS] R-VER48-03                             No matches
+[PASS] R-VER48-04                             No matches
+[PASS] R-VER48-04b                            No matches
+[PASS] R-VER48-05                             No matches
+[PASS] R-VER48-06                             No matches
+[PASS] R-VER48-07                             No matches
+[PASS] R-VER49-01                             No matches
+[PASS] R-VER49-02                             No matches
+[PASS] R-VER49-03                             No matches
+[PASS] R-VER49-04                             No matches
+[PASS] R-VER49-05                             No matches
+[PASS] R-VER49-06                             No matches
+[PASS] R-VER49-07                             No matches
+[PASS] R-VER49-08                             No matches
+[PASS] R-VER49-09                             No matches
+[PASS] R-VER49-10                             No matches
+[PASS] R-VER49-11                             No matches
+[PASS] R-VER50-01                             No matches
+[PASS] R-VER50-02                             No matches
+[PASS] R-VER50-03                             No matches
+[PASS] R-VER50-04                             No matches
+[PASS] R-VER50-05                             No matches
+[SKIP] eslint                                 No eslint.config.mjs or node_modules/.bin/eslint found
+
+[PASS] metadata/valid-json                    metadata.json is valid JSON
+[PASS] metadata/required-fields               All required fields present
+[PASS] metadata/uuid-format                   UUID format is valid: panel-apps@lisandro.local
+[PASS] metadata/uuid-matches-dir              UUID matches directory name
+[PASS] metadata/uuid-no-gnome-org             UUID does not use @gnome.org namespace
+[PASS] metadata/shell-version-array           shell-version is an array
+[PASS] metadata/shell-version-current         shell-version includes current GNOME 50
+[PASS] metadata/session-modes                 No redundant session-modes key
+[PASS] metadata/settings-schema               settings-schema has correct prefix: org.gnome.shell.extensions.panel-apps
+[PASS] metadata/uuid-at-sign                  UUID contains @
+[PASS] metadata/non-standard-field            No non-standard metadata fields
+[PASS] metadata/gnome-trademark               No GNOME trademark violations in metadata
+[PASS] metadata/version-name-format           version-name '0.1.0' is valid
+[PASS] metadata/shell-version-entries         All shell-version entries are valid
+[PASS] metadata/missing-url                   url field is present
+[WARN] metadata/url-format                    url 'https://example.com/panel-apps' does not appear to be a repository URL — EGO expects a link to the source code repository
+[PASS] metadata/shell-version-dev-limit       shell-version has at most 1 development release
+[PASS] metadata/session-modes-consistency     No sessionMode references without matching declaration
+[PASS] schema/exists                          Found 1 schema file(s)
+[PASS] schema/id-matches                      Schema ID 'org.gnome.shell.extensions.panel-apps' found in org.gnome.shell.extensions.panel-apps.gschema.xml
+[PASS] schema/filename-convention             Schema filename matches settings-schema: org.gnome.shell.extensions.panel-apps.gschema.xml
+[PASS] schema/path                            Schema path is correct: /org/gnome/shell/extensions/panel-apps/
+[PASS] schema/path-trailing-slash             Schema path ends with /
+[PASS] schema/compile                         glib-compile-schemas --strict --dry-run passed
+[PASS] schema-usage/all-keys-used             All 5 schema key(s) referenced in code
+[PASS] schema-usage/undefined-key             All referenced keys exist in schema
+[PASS] imports/segregation                    Import contexts are properly segregated
+[PASS] quality/try-catch-density              Try-catch ratio acceptable (4/51)
+[PASS] quality/impossible-state               No impossible state checks found
+[PASS] quality/pendulum-pattern               No over-engineered async coordination detected
+[PASS] quality/module-state                   No module-level mutable state found
+[PASS] quality/empty-catch                    No empty catch blocks found
+[PASS] quality/destroyed-density              Destroyed-flag density acceptable (0 in 649 lines)
+[PASS] quality/mock-in-production             No mock/test code detected in production files
+[PASS] quality/constructor-resources          No resource allocation in constructors
+[PASS] quality/code-volume                    Code volume OK (649 non-blank lines)
+[PASS] quality/comment-density                Comment density acceptable
+[PASS] quality/file-complexity                No individual files exceed complexity thresholds
+[PASS] quality/debug-volume                   Debug logging volume OK (0 calls)
+[PASS] quality/logging-volume                 Total logging volume OK (0 calls, threshold: 30)
+[PASS] quality/notification-volume            Notification volume OK (0 call sites)
+[WARN] quality/private-api                    panelApps.js:84: Main.panel private API access — requires reviewer justification and version pinning
+[PASS] quality/gettext-pattern                Gettext usage follows recommended pattern
+[PASS] quality/redundant-cleanup              Cleanup pattern balance OK (verbose: 2, idiomatic: 0)
+[PASS] quality/comment-prompt-density         No excessive instructional comment patterns
+[PASS] quality/run-dispose-no-comment         All run_dispose() calls have comments or none found
+[PASS] quality/excessive-null-checks          Null/undefined check density acceptable (0 in 649 lines)
+[PASS] quality/repeated-settings              Settings instances OK (1 across extension files)
+[PASS] quality/obfuscated-names               No significant obfuscation detected (0 suspect names)
+[PASS] quality/mixed-indentation              Consistent indentation style
+[PASS] quality/excessive-logging              Logging volume acceptable (0 debug/log calls)
+[PASS] quality/code-provenance                Some hand-written indicators: provenance-score=2; signals=[nontrivial-algorithms(5), consistent-naming-style]; files=5
+[PASS] lifecycle/enable-disable               enable() and disable() both defined
+[PASS] lifecycle/default-export               extension.js has default export class
+[WARN] lifecycle/signal-balance               5 manual .connect() calls but only 2 .disconnect() calls — verify all signals are disconnected in disable()
+[PASS] lifecycle/untracked-timeout            All timeout/idle sources have stored IDs
+[PASS] lifecycle/connectObject-migration      Signal connection pattern OK
+[PASS] lifecycle/timeout-return-value         All timeout/idle callbacks return SOURCE_REMOVE or SOURCE_CONTINUE
+[PASS] lifecycle/selective-disable            disable() does not conditionally skip cleanup
+[PASS] lifecycle/timeout-reassignment         No timeout ID reassignment without removal detected
+[WARN] lifecycle/destroy-no-null              extension.js:27: .destroy() without null assignment — set reference to null after destroy to prevent stale access
+[PASS] lifecycle/destroy-no-call              All .destroy references include parentheses
+[PASS] lifecycle/widget-destroy               No widgets tracked in enable()
+[PASS] lifecycle/settings-cleanup             All settings objects properly cleaned up
+[PASS] lifecycle/module-scope-state           No uncleared module-scope Map/Set found
+[PASS] lifecycle/module-scope-prototype       No module-scope prototype mutations found
+[PASS] gobject/missing-gtypename              All registerClass calls include GTypeName
+[PASS] gobject/missing-super-init             All GObject subclass _init() methods call super._init()
+[PASS] gobject/cairo-dispose                  All drawing callbacks dispose Cairo context
+[PASS] async/missing-cancellable              All _async() calls have cancellable argument
+[PASS] async/catch-on-sync                    No .catch()/.then() calls on non-async methods
+[PASS] prefs/prefs-method                     prefs.js uses fillPreferencesWindow()
+[PASS] prefs/default-export                   prefs.js has default export class
+[PASS] prefs/extends-base                     prefs.js extends ExtensionPreferences
+[PASS] prefs/resource-path                    Resource paths OK
+[PASS] prefs/memory-leak                      Stored GObject instances have cleanup indicators
+[PASS] init/shell-modification                No init-time Shell modifications detected
+[PASS] init/promisify-in-enable               No Gio._promisify() placement issues
+[PASS] resource-tracking/ownership            4 files scanned, depth 2, 0 orphans
+[PASS] disclosure/clipboard                   No clipboard usage detected
+[PASS] disclosure/network                     No network usage detected
+[PASS] disclosure/pkexec                      No pkexec usage detected
+[PASS] disclosure/private-api                 No private-api usage detected
+[PASS] disclosure/file-io                     No file-io usage detected
+[PASS] disclosure/subprocess                  No subprocess usage detected
+[PASS] R-SEC-09b                              No cross-extension lookupByUUID calls found
+[SKIP] package/exists                         No zip package found in extension directory
+
+[METRIC] js-files: 5
+[METRIC] total-lines: 760
+[METRIC] largest-file: prefs.js (313)
+[METRIC] css-lines: 21
+[METRIC] schema-keys: 5
+
+----------------------------------------------------------------
+  Results: 231 checks — 213 passed, 0 failed, 8 warnings, 10 skipped
+----------------------------------------------------------------
+
+================================================================
+  REPORT
+================================================================
+
+--- BLOCKING ISSUES (FAIL) ---
+
+--- WARNINGS ---
+  ⚠ R-PREFS-04c: GTK layout widget in prefs.js — verify no Adw equivalent for this specific use case in 1 file(s): prefs.js
+  ⚠ R-SLOP-44: Non-idiomatic GLib C-binding — use GLib.Source.remove() in 1 file(s): panelApps.js
+  ⚠ R-QUAL-31: panelApps.js:127: _onDestroy() should be renamed to destroy() with super.destroy() at the end
+  ⚠ R-QUAL-31: panelApps.js:259: _onDestroy() should be renamed to destroy() with super.destroy() at the end
+  ⚠ metadata/url-format: url 'https://example.com/panel-apps' does not appear to be a repository URL — EGO expects a link to the source code repository
+  ⚠ quality/private-api: panelApps.js:84: Main.panel private API access — requires reviewer justification and version pinning
+  ⚠ lifecycle/signal-balance: 5 manual .connect() calls but only 2 .disconnect() calls — verify all signals are disconnected in disable()
+  ⚠ lifecycle/destroy-no-null: extension.js:27: .destroy() without null assignment — set reference to null after destroy to prevent stale access
+
+--- FIX SUGGESTIONS ---
+  R-PREFS-04c: Gtk.ListBox with boxed-list CSS is valid for dynamic lists. Gtk.ScrolledWindow is valid for constrained-height content. Gtk.Grid/Stack may have Adw equivalents depending on usage.
+  R-SLOP-44: GLib.source_remove(id) → GLib.Source.remove(id). The function works but GLib.Source.remove() is the idiomatic GJS form.
+  R-QUAL-31: Rename to destroy() { /* cleanup */; super.destroy(); }
+  R-QUAL-31: Rename to destroy() { /* cleanup */; super.destroy(); }
+
+--- VERDICT ---
+  MAY PASS WITH COMMENTS: 7 checks flagged (8 total findings)
+================================================================

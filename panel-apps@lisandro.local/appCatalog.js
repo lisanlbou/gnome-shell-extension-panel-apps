@@ -34,16 +34,6 @@ export class AppCatalog {
         return this.parentalControls.shouldShowApp(appInfo);
     }
 
-    /** Eligible installed applications as GAppInfo objects (not Shell.App). */
-    getInstalledApps() {
-        const result = [];
-        for (const appInfo of this.appSystem.get_installed()) {
-            if (this.isEligible(appInfo))
-                result.push(appInfo);
-        }
-        return result;
-    }
-
     /** Resolve a desktop ID (e.g. "org.gnome.Terminal.desktop") to a Shell.App. */
     lookupApp(id) {
         return this.appSystem.lookup_app(id) || null;

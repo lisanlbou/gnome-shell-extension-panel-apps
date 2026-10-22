@@ -22,8 +22,9 @@ import {
 
 const FALLBACK_ICON_NAME = 'application-x-executable-symbolic';
 
-const AppButton = GObject.registerClass(
-class AppButton extends St.Button {
+const AppButton = GObject.registerClass({
+    GTypeName: 'PanelAppsAppButton',
+}, class AppButton extends St.Button {
     _init(app, options) {
         super._init({
             style_class: 'panel-apps-app-button',
@@ -131,8 +132,9 @@ class AppButton extends St.Button {
     }
 });
 
-export const PanelApps = GObject.registerClass(
-class PanelApps extends PanelMenu.Button {
+export const PanelApps = GObject.registerClass({
+    GTypeName: 'PanelAppsIndicator',
+}, class PanelApps extends PanelMenu.Button {
     _init(settings, catalog) {
         super._init(0.5, 'Panel Apps', false);
 

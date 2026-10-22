@@ -55,19 +55,16 @@ Then:
 Build the bundle and install it:
 
 ```sh
-glib-compile-schemas --strict panel-apps@lisandro.local/schemas/
-gnome-extensions pack --force \
-    --extra-source=appCatalog.js \
-    --extra-source=panelApps.js \
-    --extra-source=settings.js \
-    panel-apps@lisandro.local
-
+./build.sh
 gnome-extensions install panel-apps@lisandro.local.shell-extension.zip
 ```
 
-`metadata.json`, `extension.js`, `prefs.js`, `stylesheet.css` and `schemas/`
-are packed automatically; only the extra JS modules need `--extra-source`.
-`gnome-extensions install` compiles the schema on install.
+`build.sh` runs the unit tests, compiles the schema, and packages the whole
+extension directory into a zip using `gnome-extensions pack`. `metadata.json`,
+`extension.js`, `prefs.js`, `stylesheet.css` and `schemas/` are packed
+automatically; only the extra JS modules (`appCatalog.js`, `panelApps.js`,
+`settings.js`) need `--extra-source`. `gnome-extensions install` compiles the
+schema on install.
 
 Then log out/in and enable as in step 3.
 

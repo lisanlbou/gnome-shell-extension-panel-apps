@@ -1,0 +1,17 @@
+# Runtime lifecycle test — 2026-10-22 12:07:02
+shell pid: 7021
+initial state:   State: ACTIVE
+
+=== 20 enable/disable cycles (2x10) ===
+batch 1 done
+batch 2 done
+
+state after cycles:   Enabled: Yes
+  State: ACTIVE
+
+=== gsettings placement/icon-size changes ===
+final panel-box='right' icon-size=18 show-running-indicator=true
+
+=== state check ===
+  Enabled: Yes
+  State: ACTIVE
