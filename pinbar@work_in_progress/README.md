@@ -25,26 +25,26 @@ icon to launch or focus its application.
 
 ## Install (development)
 
-The extension's UUID is `pinbar@lisandro.local`; it must live under a
+The extension's UUID is `pinbar@work_in_progress`; it must live under a
 directory of that name.
 
 ```sh
 # Compile the GSettings schema (strict)
-glib-compile-schemas --strict pinbar@lisandro.local/schemas/
+glib-compile-schemas --strict pinbar@work_in_progress/schemas/
 
 # Link the extension into the per-user extensions directory (no root needed)
-ln -s "$PWD/pinbar@lisandro.local" \
-    ~/.local/share/gnome-shell/extensions/pinbar@lisandro.local
+ln -s "$PWD/pinbar@work_in_progress" \
+    ~/.local/share/gnome-shell/extensions/pinbar@work_in_progress
 
 # Make the schema visible to the running session (per-user schema dir)
 mkdir -p ~/.local/share/glib-2.0/schemas
-cp pinbar@lisandro.local/schemas/org.gnome.shell.extensions.pinbar.gschema.xml \
+cp pinbar@work_in_progress/schemas/org.gnome.shell.extensions.pinbar.gschema.xml \
     ~/.local/share/glib-2.0/schemas/
 glib-compile-schemas ~/.local/share/glib-2.0/schemas/
 
 # Enable and open preferences
-gnome-extensions enable pinbar@lisandro.local
-gnome-extensions prefs pinbar@lisandro.local
+gnome-extensions enable pinbar@work_in_progress
+gnome-extensions prefs pinbar@work_in_progress
 ```
 
 Source changes require a new Shell process: toggling the extension does not
@@ -55,20 +55,20 @@ Do **not** use Alt+F2 → `r` on Wayland.
 ## Build (packaged zip)
 
 ```sh
-glib-compile-schemas --strict pinbar@lisandro.local/schemas/
+glib-compile-schemas --strict pinbar@work_in_progress/schemas/
 gnome-extensions pack --force \
     --extra-source=appCatalog.js \
     --extra-source=pinBar.js \
     --extra-source=settings.js \
-    pinbar@lisandro.local
+    pinbar@work_in_progress
 ```
 
 `metadata.json`, `extension.js`, `prefs.js`, `stylesheet.css` and the `schemas/`
 directory are included automatically; only the additional JS modules need
 `--extra-source`. `gnome-extensions install` compiles the schema on install.
 
-Install the resulting `pinbar@lisandro.local.shell-extension.zip` with
-`gnome-extensions install pinbar@lisandro.local.shell-extension.zip`.
+Install the resulting `pinbar@work_in_progress.shell-extension.zip` with
+`gnome-extensions install pinbar@work_in_progress.shell-extension.zip`.
 
 ## Usage
 

@@ -30,12 +30,12 @@ See [`INSTALL.md`](INSTALL.md), or build and install the packaged bundle:
 
 ```sh
 ./build.sh
-gnome-extensions install pinbar@lisandro.local.shell-extension.zip
+gnome-extensions install pinbar@work_in_progress.shell-extension.zip
 ```
 
 ## Documentation
 
-- [Extension README](pinbar@lisandro.local/README.md) — usage, settings,
+- [Extension README](pinbar@work_in_progress/README.md) — usage, settings,
   limitations and compatibility.
 
 ## Testing
@@ -54,4 +54,4 @@ gjs -m tests/run-tests.js
 
 ## License
 
-GPL-2.0-or-later. See [LICENSE](pinbar@lisandro.local/LICENSE).
+GPL-2.0-or-later. See [LICENSE](pinbar@work_in_progress/LICENSE).

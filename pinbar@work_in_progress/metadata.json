@@ -1,10 +1,10 @@
 {
-  "uuid": "pinbar@lisandro.local",
+  "uuid": "pinbar@work_in_progress",
   "name": "PinBar",
   "description": "Pin favourite applications to the top panel. Search installed apps in Preferences and click an icon to launch or focus it.",
   "shell-version": ["50"],
   "url": "https://github.com/lisanlbou/gnome-shell-extension-panel-apps",
   "settings-schema": "org.gnome.shell.extensions.pinbar",
   "version-name": "0.1.0-alpha",
-  "original-author": "lisandro@local"
+  "original-author": "lisanlbou@work_in_progress"
 }

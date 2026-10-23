@@ -24,6 +24,7 @@ export default class PinBarPreferences extends ExtensionPreferences {
         this._buildPinnedGroup(page);
         this._buildAllAppsGroup(page);
         this._buildPanelPage(window);
+        this._buildAboutPage(window);
 
         // Track application install/uninstall while the window is open.
         this._monitor = Gio.AppInfoMonitor.get();
@@ -310,5 +311,22 @@ export default class PinBarPreferences extends ExtensionPreferences {
             this._settings.set_boolean('show-running-indicator', runningRow.active);
         });
         appearance.add(runningRow);
+    }
+
+    _buildAboutPage(window) {
+        const page = new Adw.PreferencesPage({
+            title: 'About',
+            icon_name: 'help-about-symbolic',
+        });
+        window.add(page);
+
+        const group = new Adw.PreferencesGroup({
+            title: 'PinBar',
+            description: 'Pin favourite applications to the top panel. Search installed apps in Preferences and click an icon to launch or focus it.',
+        });
+        page.add(group);
+
+        group.add(new Adw.ActionRow({ title: 'Version', subtitle: this.metadata['version-name'] }));
+        group.add(new Adw.ActionRow({ title: 'Author', subtitle: 'lisanlbou@work_in_progress' }));
     }
 }
