@@ -4,6 +4,8 @@ A GNOME Shell extension that pins selected installed applications to the top
 panel. Search the application catalogue in Preferences, then click an icon to
 launch or focus its application.
 
+Vibe-coded with DeepSeek (coding & planning) and ChatGPT (planning).
+
 > **Working interpretation of "tray"**: persistent app launch/focus icons in the
 > top panel. This is **not** a native tray-protocol (StatusNotifierItem /
 > AppIndicator) host, and it does not intercept window-close events.
