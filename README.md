@@ -42,6 +42,14 @@ gnome-extensions install panel-apps@lisandro.local.shell-extension.zip
 gjs -m tests/run-tests.js
 ```
 
+## Screenshots
+
+![Panel with pinned apps](screenshots/panel.png)
+
+![Application picker](screenshots/preferences-applications.png)
+
+![Context menu](screenshots/context-menu.png)
+
 ## License
 
 GPL-2.0-or-later. See [LICENSE](panel-apps@lisandro.local/LICENSE).
