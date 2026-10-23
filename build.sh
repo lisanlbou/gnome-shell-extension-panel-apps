@@ -3,7 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-EXT=pinbar@lisandro.local
+EXT=pinbar@work_in_progress
 
 echo "==> Running unit tests"
 gjs -m tests/run-tests.js

@@ -1,5 +1,5 @@
 {
-  "uuid": "pinbar@lisandro.local",
+  "uuid": "pinbar@work_in_progress",
   "name": "PinBar",
   "description": "Pin favourite applications to the top panel. Search installed apps in Preferences and click an icon to launch or focus it.",
   "shell-version": ["50"],

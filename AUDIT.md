@@ -1,4 +1,4 @@
-# Auditoría pre-envío EGO — pinbar (`pinbar@lisandro.local`)
+# Auditoría pre-envío EGO — pinbar (`pinbar@work_in_progress`)
 
 Guía reproducible para ejecutar la **misma auditoría de 8 fases** que se aplicó
 a VRAM-tray, adaptada a la extensión **PinBar** (pinbar).
@@ -8,7 +8,7 @@ a VRAM-tray, adaptada a la extensión **PinBar** (pinbar).
 | Dato | Valor |
 | --- | --- |
 | Proyecto | `/home/lisandro-dev/Documents/Projects/pinbar` |
-| UUID | `pinbar@lisandro.local` |
+| UUID | `pinbar@work_in_progress` |
 | Schema | `org.gnome.shell.extensions.pinbar` |
 | Shell declarado | `["50"]` (probado en 50.5) |
 | Archivos de la extensión | `extension.js`, `prefs.js`, `pinBar.js`, `appCatalog.js`, `settings.js`, `stylesheet.css`, `schemas/`, `LICENSE`, `README.md` |
@@ -17,7 +17,7 @@ a VRAM-tray, adaptada a la extensión **PinBar** (pinbar).
 | Entorno | Fedora 44 · GNOME Shell 50.5 · GJS 1.88.1 · Wayland |
 
 > ⚠️ Al inicio el repo tiene cambios sin commitear (`M INSTALL.md`, `?? build.sh`)
-> y ya existe un `pinbar@lisandro.local.shell-extension.zip`. Regístralo en la
+> y ya existe un `pinbar@work_in_progress.shell-extension.zip`. Regístralo en la
 > línea base y no lo borres del historial.
 
 ---
@@ -44,7 +44,7 @@ glib-compile-schemas --version
 gjs -m tests/run-tests.js
 
 # Estado instalado
-gnome-extensions info pinbar@lisandro.local
+gnome-extensions info pinbar@work_in_progress
 ```
 
 **Registrar:** estructura, commit actual, versiones, artefactos (zip, `schemas/gschemas.compiled`),
@@ -68,7 +68,7 @@ cd /tmp/gnome-extension-reviewer && git rev-parse HEAD
 
 # Ejecutar sobre el árbol fuente
 cd /home/lisandro-dev/Documents/Projects/pinbar
-/tmp/gnome-extension-reviewer/ego-lint pinbar@lisandro.local --show all \
+/tmp/gnome-extension-reviewer/ego-lint pinbar@work_in_progress --show all \
   > audit/ego-lint-output.txt 2>&1; echo "EXIT=$?"
 ```
 
@@ -152,8 +152,8 @@ S=org.gnome.shell.extensions.pinbar
 
 # 1) 20 ciclos enable/disable (en tandas de 10 por el timeout del shell)
 for i in $(seq 1 10); do
-  gnome-extensions disable pinbar@lisandro.local
-  gnome-extensions enable  pinbar@lisandro.local
+  gnome-extensions disable pinbar@work_in_progress
+  gnome-extensions enable  pinbar@work_in_progress
 done
 # (repetir para llegar a 20)
 
@@ -204,13 +204,13 @@ cd /home/lisandro-dev/Documents/Projects/pinbar
 ./build.sh
 
 # Ver el contenido del zip
-unzip -l pinbar@lisandro.local.shell-extension.zip
+unzip -l pinbar@work_in_progress.shell-extension.zip
 
 # Extraer a una carpeta CON EL MISMO NOMBRE que el UUID y validar
-rm -rf /tmp/pinbar@lisandro.local
-mkdir -p /tmp/pinbar@lisandro.local
-unzip -q pinbar@lisandro.local.shell-extension.zip -d /tmp/pinbar@lisandro.local
-/tmp/gnome-extension-reviewer/ego-lint /tmp/pinbar@lisandro.local --show all
+rm -rf /tmp/pinbar@work_in_progress
+mkdir -p /tmp/pinbar@work_in_progress
+unzip -q pinbar@work_in_progress.shell-extension.zip -d /tmp/pinbar@work_in_progress
+/tmp/gnome-extension-reviewer/ego-lint /tmp/pinbar@work_in_progress --show all
 ```
 
 **Comprobar:** archivos obligatorios presentes; metadata coincide; schema válido;
@@ -261,14 +261,14 @@ mkdir -p audit
 gjs -m tests/run-tests.js
 
 # 2) ego-lint (clonar primero si no existe)
-/tmp/gnome-extension-reviewer/ego-lint pinbar@lisandro.local --show all | tee audit/ego-lint-output.txt
+/tmp/gnome-extension-reviewer/ego-lint pinbar@work_in_progress --show all | tee audit/ego-lint-output.txt
 
 # 3) build + paquete
 ./build.sh
 
 # 4) lint del paquete extraído
-unzip -q pinbar@lisandro.local.shell-extension.zip -d /tmp/pinbar@lisandro.local
-/tmp/gnome-extension-reviewer/ego-lint /tmp/pinbar@lisandro.local --show all | tee audit/ego-lint-output-package.txt
+unzip -q pinbar@work_in_progress.shell-extension.zip -d /tmp/pinbar@work_in_progress
+/tmp/gnome-extension-reviewer/ego-lint /tmp/pinbar@work_in_progress --show all | tee audit/ego-lint-output-package.txt
 ```
 
 Los informes (`01-baseline.md` … `FINAL-REPORT.md`) se escriben en `audit/`.
