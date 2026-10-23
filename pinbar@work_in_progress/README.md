@@ -133,7 +133,7 @@ msgmerge --update po/es.po po/pinbar@work_in_progress.pot
 msgmerge --update po/pt_BR.po po/pinbar@work_in_progress.pot
 ```
 
-Verified on GNOME Shell 50.5 (headless nested Wayland session):
+Verified on GNOME Shell 50.5 (headless Wayland session with a virtual monitor):
 
 - Extension enables to `ACTIVE` and disables cleanly; 10× enable/disable cycles
   with no errors or duplicate status-area entries.
@@ -141,12 +141,18 @@ Verified on GNOME Shell 50.5 (headless nested Wayland session):
   including duplicate and bogus desktop IDs) apply without errors.
 - Catalogue matches the desktop registry: 173 registered → 85 visible after
   `should_show()` (22 Flatpak, 8 user entries, 55 system RPMs).
-- Preferences (picker + panel config) load without JS or markup errors, in both
-  the C and `es` locales.
+- Preferences (picker + panel config) load without JS or markup errors in C,
+  `es` and `pt_BR`; the catalogs themselves were checked with a `gjs` gettext
+  lookup (dialog text inspection is still manual).
+- Context-menu lifecycle verified in-session with a temporary harness (not
+  shipped): creation, open/close, panel menu registration/removal on destroy,
+  Menu key and Shift+F10 handling, plain-F10 passthrough, and teardown while
+  the menu is open (no JS errors).
 
 Not verified in a headless environment (manual checklist, pending a real
-Wayland session): visual click-to-launch/focus, keyboard navigation, HiDPI
-scaling, lock/unlock, suspend/resume, and coexistence with AppIndicator.
+Wayland session): visual click-to-launch/focus, real pointer input, full
+focus-ring/Tab navigation and Orca, HiDPI scaling, lock/unlock, suspend/resume,
+RTL, and coexistence with AppIndicator.
 
 ## Limitations
 

@@ -48,7 +48,7 @@ msgstr "No hay aplicaciones ancladas"
 
 #: prefs.js:158
 msgid "Search below and enable an application to pin it."
-msgstr "Busca abajo y activa una aplicación para anclarla."
+msgstr "Busca más abajo y activa una aplicación para anclarla."
 
 #: prefs.js:174
 #, javascript-format

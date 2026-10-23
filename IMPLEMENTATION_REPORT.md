@@ -10,9 +10,9 @@ Fixed the two P0 defects that prevented PinBar from enabling on GNOME 45–49,
 completed the P1 compatibility/accessibility/localization work (PB-03…PB-07),
 and validated everything that this environment can validate: unit tests,
 syntax, schema, gettext catalogs, packaging, `ego-lint` (source tree and
-packed zip) and a **real GNOME Shell 50.5 runtime session** (headless nested
-Wayland compositor in an isolated `HOME`, so the maintainer's live session was
-never modified).
+packed zip) and a **real GNOME Shell 50.5 runtime session** (headless Wayland
+compositor with a virtual monitor, in an isolated `HOME`, so the maintainer's
+live session was never modified).
 
 `metadata.json` continues to declare `shell-version: ["50"]` — the only major
 actually runtime-tested here. GNOME 45–49/51 compatibility is implemented and
@@ -43,9 +43,9 @@ runtime-tested; see the matrix.
 | PB-02 — St.BoxLayout orientation by version | **Done** | Upstream st-box-layout.c verified: 45–47 `vertical` only; 48–50 both (`vertical` deprecated); main (51-dev) `orientation` only. Runtime feature detection (`'orientation' in St.BoxLayout.prototype`, confirmed via introspection on 50.5). |
 | PB-03 — application filtering APIs | **Done** | `getDefault()`/`shouldShowApp()`/`app-filter-changed` identical in parentalControlsManager.js 45 and 50 sources. Adapter adds `should_show()` fallback and null-safety; subscriptions released in `disable()` (verified 10× enable/disable runtime). |
 | PB-04 — nullable IDs | **Done** | Rejected in prefs (load time), catalog (`isEligible`, `lookupApp`) and covered by unit tests. Runtime-tested with a bogus desktop ID in `pinned-apps` (no errors). |
-| PB-05 — accessible buttons and menus | **Done (code) / Not tested (Orca)** | Running state in accessible name, Menu/Shift+F10 route, focus restore on close, `PANEL` role for the container. Keyboard/Orca behavior needs a human session (checklist below). |
-| PB-06 — GTK/libadwaita prefs compatibility | **Done** | `remove_all()` eliminated; prefs process smoke-tested (start, no JS/GTK errors) in C and `es` locales on GTK4/Adw of GNOME 50. |
-| PB-07 — translations | **Done** | All user-visible strings extracted (30 msgids incl. context-qualified "Panel box" entries); es + pt_BR complete; `.mo` files verified inside the packaged zip; prefs smoke-tested under `LANGUAGE=es`. Runtime UI text inspection = manual. |
+| PB-05 — accessible buttons and menus | **Done (code + menu lifecycle runtime) / Not tested (Orca)** | Running state in accessible name, Menu/Shift+F10 route, focus restore on close, `PANEL` role for the container. A temporary in-session harness (test `HOME` only, not shipped) verified 15 menu-lifecycle checks: open/close, `Main.panel.menuManager` registration and removal on destroy, Menu/Shift+F10 handling, plain-F10 passthrough, and teardown while open with no JS errors. Real pointer input and Orca behavior need a human session (checklist below). |
+| PB-06 — GTK/libadwaita prefs compatibility | **Done** | `remove_all()` eliminated; the prefs process starts and exits cleanly (no JS/GTK stderr) under C, `es` and `pt_BR` on GTK4/Adw of GNOME 50. Dialog text itself was not inspected visually. |
+| PB-07 — translations | **Done** | All user-visible strings extracted (30 msgids incl. context-qualified "Panel box" entries); es + pt_BR complete; `.mo` files verified inside the packaged zip; runtime catalog lookup verified with `gjs` gettext under C/`es`/`pt_BR`; prefs process starts cleanly in those locales. Catalog headers/plural forms validated by `msgfmt --check`. Runtime UI text inspection = manual (catalogs load at session start, so a re-login is required after installing/updating translations). |
 
 ## Validation commands and outputs (all executed)
 
@@ -60,8 +60,8 @@ ego-lint <extracted zip>                   → 232 checks — 214 passed, 0 fail
 git diff --check                           → OK (no whitespace errors)
 ```
 
-Runtime (GNOME Shell 50.5, headless nested Wayland session, isolated HOME,
-production session untouched):
+Runtime (GNOME Shell 50.5, headless Wayland session with a virtual monitor,
+isolated HOME, production session untouched):
 
 ```
 load + enable                              → State: ACTIVE, no JS errors
@@ -71,10 +71,28 @@ gsettings panel-position 3 → 0             → OK
 gsettings icon-size 24 → 18                → OK
 gsettings show-running-indicator f → t     → OK
 gsettings pinned-apps: pin 1 / pin 3+duplicate / bogus id / [] / re-pin → OK, no errors
-gnome-extensions prefs (C locale)          → dialog process starts, no JS/GTK stderr
-gnome-extensions prefs (LANGUAGE=es)       → dialog process starts, no JS/GTK stderr
-nested shell journal (JS ERROR / Extension point conflict / CRITICAL) → none
+gnome-extensions prefs                     → request accepted (dialog opens; a second
+                                             request reports "Already showing a prefs
+                                             dialog"), no JS/GTK stderr
+prefs app process (LANGUAGE=es / pt_BR,
+  nested Wayland display)                  → starts and exits cleanly, no stderr
+gettext lookup (gjs, domain pinbar@work_in_progress, extension locale/):
+  C / es / pt_BR                           → English fallback / translated / translated
+                                             (incl. current "Busca más abajo…" wording)
+menu lifecycle harness (test HOME only, not shipped):
+  button allocated + accessible name       → PASS
+  open / close + panel menu registration   → PASS (registered; unregistered on destroy)
+  Menu key / Shift+F10 / plain F10         → PASS (STOP / STOP / PROPAGATE)
+  destroy with menu open                   → PASS, no JS errors afterwards
+nested shell session log (JS ERROR / Extension point conflict / CRITICAL) → none
 ```
+
+The menu-lifecycle harness is a temporary extension kept outside the repository;
+it imported the build under test, opened the real `PopupMenu`, and asserted the
+panel manager's internal registration list. It was run once after the panel
+layout had been allocated (opening a menu before the first allocation in the
+same tick produces unrelated relayout warnings, so that ordering is not a
+product scenario).
 
 The 8 remaining `ego-lint` warnings were reviewed one by one: 6 are documented
 false positives (`_onDestroy` is GNOME's own destroy-hook pattern; `vertical`
@@ -93,7 +111,7 @@ private API), 1 is the intentional parental-controls `typeof` fallback
 | 47 | Source-audited vs upstream gnome-47 | Not tested | Not tested | Not tested | Not tested | No |
 | 48 | Source-audited vs upstream gnome-48 (incl. st-box-layout orientation) | Not tested | Not tested | Not tested | Not tested | No |
 | 49 | Source-audited vs upstream gnome-49 | Not tested | Not tested | Not tested | Not tested | No |
-| 50 | **Pass** | **Pass (50.5, headless)** | **Pass (gsettings-driven; pointer/keyboard clicks manual)** | **Pass (dialog starts C+es)** | Catalogs packaged; Orca not tested | **Declared `["50"]` (as before)** |
+| 50 | **Pass** | **Pass (50.5, headless)** | **Pass (gsettings-driven + menu lifecycle harness; real pointer/keyboard input manual)** | **Pass (dialog opens; UI text manual)** | Catalogs packaged + lookup verified; Orca not tested | **Declared `["50"]` (as before)** |
 | 51 | Source-audited vs upstream `main` (vertical removed; _clickGesture present) | Not tested | Not tested | Not tested | Not tested | No |
 
 GNOME 50 was **not** re-tested on a physical interactive session in this run;

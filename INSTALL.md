@@ -47,8 +47,8 @@ gnome-extensions prefs pinbar@work_in_progress
 Then:
 1. Open **Preferences → Applications**.
 2. Search an app and toggle its switch to pin it.
-3. Use **Move Up / Move Down** to reorder; configure placement, icon size,
-   running dot and maximum visible apps under **Preferences → Panel**.
+3. Use **Move Up / Move Down** to reorder; configure panel box/position,
+   icon size and the running dot under **Preferences → Panel**.
 
 ## 4. Install (packaged `.zip`, no dev checkout)
 
@@ -62,9 +62,11 @@ gnome-extensions install pinbar@work_in_progress.shell-extension.zip
 `build.sh` runs the unit tests, compiles the schema, and packages the whole
 extension directory into a zip using `gnome-extensions pack`. `metadata.json`,
 `extension.js`, `prefs.js`, `stylesheet.css` and `schemas/` are packed
-automatically; only the extra JS modules (`appCatalog.js`, `pinBar.js`,
-`settings.js`) need `--extra-source`. `gnome-extensions install` compiles the
-schema on install.
+automatically; the extra JS modules (`appCatalog.js`, `compat.js`, `pinBar.js`,
+`settings.js`) and the docs need `--extra-source`, and `--podir=po
+--gettext-domain=...` compiles the catalogs into `locale/<lang>/LC_MESSAGES/`.
+`build.sh` passes all of these. `gnome-extensions install` compiles the schema
+on install.
 
 Then log out/in and enable as in step 3.
 
@@ -85,6 +87,8 @@ glib-compile-schemas ~/.local/share/glib-2.0/schemas/
   started before the extension existed. Log out and log back in.
 - **`gnome-extensions prefs` prints usage** — the command is `prefs`
   (not `pref`).
+- **UI still shows English (or old strings) after a translation update** —
+  GNOME Shell loads `.mo` catalogs at startup; log out and back in.
 - **To verify it loaded** — `gnome-extensions info pinbar@work_in_progress`
   should show `State: ACTIVE`.
 - **To watch for errors** — `journalctl --user -f -o cat | grep -i pinbar`.
