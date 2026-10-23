@@ -18,6 +18,8 @@ gnome-extensions pack --force \
     --extra-source=pinBar.js \
     --extra-source=settings.js \
     --extra-source=LICENSE \
+    --extra-source=README.md \
+    --extra-source=CHANGELOG.md \
     "$EXT"
 
 echo "==> Done: $EXT.shell-extension.zip"

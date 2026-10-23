@@ -37,6 +37,8 @@ gnome-extensions install pinbar@work_in_progress.shell-extension.zip
 
 - [Extension README](pinbar@work_in_progress/README.md) — usage, settings,
   limitations and compatibility.
+- [Changelog](pinbar@work_in_progress/CHANGELOG.md)
+- [Release notes](RELEASE-NOTES.md)
 
 ## Testing
 
