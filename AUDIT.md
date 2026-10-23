@@ -1,23 +1,23 @@
-# Auditoría pre-envío EGO — CustomTray (`panel-apps@lisandro.local`)
+# Auditoría pre-envío EGO — pinbar (`pinbar@lisandro.local`)
 
 Guía reproducible para ejecutar la **misma auditoría de 8 fases** que se aplicó
-a VRAM-tray, adaptada a la extensión **Panel Apps** (CustomTray).
+a VRAM-tray, adaptada a la extensión **PinBar** (pinbar).
 
 ## Datos clave del proyecto
 
 | Dato | Valor |
 | --- | --- |
-| Proyecto | `/home/lisandro-dev/Documents/Projects/CustomTray` |
-| UUID | `panel-apps@lisandro.local` |
-| Schema | `org.gnome.shell.extensions.panel-apps` |
+| Proyecto | `/home/lisandro-dev/Documents/Projects/pinbar` |
+| UUID | `pinbar@lisandro.local` |
+| Schema | `org.gnome.shell.extensions.pinbar` |
 | Shell declarado | `["50"]` (probado en 50.5) |
-| Archivos de la extensión | `extension.js`, `prefs.js`, `panelApps.js`, `appCatalog.js`, `settings.js`, `stylesheet.css`, `schemas/`, `LICENSE`, `README.md` |
+| Archivos de la extensión | `extension.js`, `prefs.js`, `pinBar.js`, `appCatalog.js`, `settings.js`, `stylesheet.css`, `schemas/`, `LICENSE`, `README.md` |
 | Tests | `gjs -m tests/run-tests.js` (esperado: ~25 pruebas) |
 | Build | `./build.sh` (usa `gnome-extensions pack` con `--extra-source`) |
 | Entorno | Fedora 44 · GNOME Shell 50.5 · GJS 1.88.1 · Wayland |
 
 > ⚠️ Al inicio el repo tiene cambios sin commitear (`M INSTALL.md`, `?? build.sh`)
-> y ya existe un `panel-apps@lisandro.local.shell-extension.zip`. Regístralo en la
+> y ya existe un `pinbar@lisandro.local.shell-extension.zip`. Regístralo en la
 > línea base y no lo borres del historial.
 
 ---
@@ -25,7 +25,7 @@ a VRAM-tray, adaptada a la extensión **Panel Apps** (CustomTray).
 ## Fase 1 — Línea base
 
 ```bash
-cd /home/lisandro-dev/Documents/Projects/CustomTray
+cd /home/lisandro-dev/Documents/Projects/pinbar
 
 # Estructura completa
 find . -not -path './.git/*' -not -name '.git' | sort
@@ -44,7 +44,7 @@ glib-compile-schemas --version
 gjs -m tests/run-tests.js
 
 # Estado instalado
-gnome-extensions info panel-apps@lisandro.local
+gnome-extensions info pinbar@lisandro.local
 ```
 
 **Registrar:** estructura, commit actual, versiones, artefactos (zip, `schemas/gschemas.compiled`),
@@ -57,7 +57,7 @@ resultado de los tests (incluido cualquier fallo) → crear `audit/01-baseline.m
 ## Fase 2 — ego-lint (GNOME Extension Reviewer)
 
 ```bash
-# Clonar FUERA del repo (no copiar nada dentro de CustomTray)
+# Clonar FUERA del repo (no copiar nada dentro de pinbar)
 git clone https://github.com/ZviBaratz/gnome-extension-reviewer.git /tmp/gnome-extension-reviewer
 
 # Ver la sintaxis actual de comandos
@@ -67,8 +67,8 @@ git clone https://github.com/ZviBaratz/gnome-extension-reviewer.git /tmp/gnome-e
 cd /tmp/gnome-extension-reviewer && git rev-parse HEAD
 
 # Ejecutar sobre el árbol fuente
-cd /home/lisandro-dev/Documents/Projects/CustomTray
-/tmp/gnome-extension-reviewer/ego-lint panel-apps@lisandro.local --show all \
+cd /home/lisandro-dev/Documents/Projects/pinbar
+/tmp/gnome-extension-reviewer/ego-lint pinbar@lisandro.local --show all \
   > audit/ego-lint-output.txt 2>&1; echo "EXIT=$?"
 ```
 
@@ -112,7 +112,7 @@ Crear `audit/03-gnome-compliance.md`.
 ## Fase 4 — Calidad de código generado por IA
 
 Revisar **todos** los módulos JS, no solo el entrypoint:
-`extension.js`, `prefs.js`, `panelApps.js`, `appCatalog.js`, `settings.js`.
+`extension.js`, `prefs.js`, `pinBar.js`, `appCatalog.js`, `settings.js`.
 
 Buscar: programación defensiva excesiva, `try/catch` innecesarios, handlers
 vacíos, comprobaciones de estado imposibles, código repetido, wrappers triviales,
@@ -148,12 +148,12 @@ claramente **NOT RUN** (no simular y decir que pasó).
 
 ### Ciclo de vida (automatizable)
 ```bash
-S=org.gnome.shell.extensions.panel-apps
+S=org.gnome.shell.extensions.pinbar
 
 # 1) 20 ciclos enable/disable (en tandas de 10 por el timeout del shell)
 for i in $(seq 1 10); do
-  gnome-extensions disable panel-apps@lisandro.local
-  gnome-extensions enable  panel-apps@lisandro.local
+  gnome-extensions disable pinbar@lisandro.local
+  gnome-extensions enable  pinbar@lisandro.local
 done
 # (repetir para llegar a 20)
 
@@ -167,7 +167,7 @@ gsettings set $S icon-size 24
 gsettings set $S icon-size 18
 
 # 4) Vigilar errores y "Extension point conflict"
-journalctl --user -o cat | grep -i 'panel-apps\|extension point conflict'
+journalctl --user -o cat | grep -i 'pinbar\|extension point conflict'
 ```
 
 **Comprobar:** timers huérfanos, fugas de señales, callbacks duplicados, actores
@@ -198,19 +198,19 @@ Crear `audit/06-performance.md`.
 ## Fase 7 — Validación del paquete
 
 ```bash
-cd /home/lisandro-dev/Documents/Projects/CustomTray
+cd /home/lisandro-dev/Documents/Projects/pinbar
 
 # Construir con el proceso existente (NO sobrescribe la extensión instalada)
 ./build.sh
 
 # Ver el contenido del zip
-unzip -l panel-apps@lisandro.local.shell-extension.zip
+unzip -l pinbar@lisandro.local.shell-extension.zip
 
 # Extraer a una carpeta CON EL MISMO NOMBRE que el UUID y validar
-rm -rf /tmp/panel-apps@lisandro.local
-mkdir -p /tmp/panel-apps@lisandro.local
-unzip -q panel-apps@lisandro.local.shell-extension.zip -d /tmp/panel-apps@lisandro.local
-/tmp/gnome-extension-reviewer/ego-lint /tmp/panel-apps@lisandro.local --show all
+rm -rf /tmp/pinbar@lisandro.local
+mkdir -p /tmp/pinbar@lisandro.local
+unzip -q pinbar@lisandro.local.shell-extension.zip -d /tmp/pinbar@lisandro.local
+/tmp/gnome-extension-reviewer/ego-lint /tmp/pinbar@lisandro.local --show all
 ```
 
 **Comprobar:** archivos obligatorios presentes; metadata coincide; schema válido;
@@ -246,7 +246,7 @@ No afirmar nunca que EGO aprobará la extensión.
 | --- | --- | --- |
 | Falta `url` (bloqueante para EGO) | `metadata.json` | Añadir `"url": "..."` (real o placeholder `https://example.com/...`) |
 | `original-authors` (no estándar) | `metadata.json` | Renombrar a `original-author` o eliminar |
-| `GTypeName` faltante en widgets propios | `panelApps.js` u otro | Añadir `GTypeName` único |
+| `GTypeName` faltante en widgets propios | `pinBar.js` u otro | Añadir `GTypeName` único |
 | Posible código muerto / wrappers triviales | `settings.js`, `appCatalog.js` | Revisar en Fase 4 |
 | `log()` vs `console.debug()` | varios | Opcional |
 | `Main.panel` / `GLib.file_get_contents` | según codebase | Verificar si son falsos positivos |
@@ -254,21 +254,21 @@ No afirmar nunca que EGO aprobará la extensión.
 ## Resumen rápido (orden de ejecución)
 
 ```bash
-cd /home/lisandro-dev/Documents/Projects/CustomTray
+cd /home/lisandro-dev/Documents/Projects/pinbar
 mkdir -p audit
 
 # 1) tests
 gjs -m tests/run-tests.js
 
 # 2) ego-lint (clonar primero si no existe)
-/tmp/gnome-extension-reviewer/ego-lint panel-apps@lisandro.local --show all | tee audit/ego-lint-output.txt
+/tmp/gnome-extension-reviewer/ego-lint pinbar@lisandro.local --show all | tee audit/ego-lint-output.txt
 
 # 3) build + paquete
 ./build.sh
 
 # 4) lint del paquete extraído
-unzip -q panel-apps@lisandro.local.shell-extension.zip -d /tmp/panel-apps@lisandro.local
-/tmp/gnome-extension-reviewer/ego-lint /tmp/panel-apps@lisandro.local --show all | tee audit/ego-lint-output-package.txt
+unzip -q pinbar@lisandro.local.shell-extension.zip -d /tmp/pinbar@lisandro.local
+/tmp/gnome-extension-reviewer/ego-lint /tmp/pinbar@lisandro.local --show all | tee audit/ego-lint-output-package.txt
 ```
 
 Los informes (`01-baseline.md` … `FINAL-REPORT.md`) se escriben en `audit/`.
