@@ -6,7 +6,7 @@
 // standalone GJS process. Shell/UI behaviour still needs a real or nested
 // GNOME Shell session.
 
-import * as S from '../panel-apps@lisandro.local/settings.js';
+import * as S from '../pinbar@lisandro.local/settings.js';
 
 let passed = 0;
 let failed = 0;

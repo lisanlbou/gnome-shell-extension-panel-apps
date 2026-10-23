@@ -3,7 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-EXT=panel-apps@lisandro.local
+EXT=pinbar@lisandro.local
 
 echo "==> Running unit tests"
 gjs -m tests/run-tests.js
@@ -15,7 +15,7 @@ echo "==> Packaging $EXT"
 rm -f "$EXT.shell-extension.zip"
 gnome-extensions pack --force \
     --extra-source=appCatalog.js \
-    --extra-source=panelApps.js \
+    --extra-source=pinBar.js \
     --extra-source=settings.js \
     --extra-source=LICENSE \
     "$EXT"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema id="org.gnome.shell.extensions.panel-apps"
-          path="/org/gnome/shell/extensions/panel-apps/">
+  <schema id="org.gnome.shell.extensions.pinbar"
+          path="/org/gnome/shell/extensions/pinbar/">
 
     <key name="pinned-apps" type="as">
       <default>[]</default>

@@ -1,4 +1,4 @@
-# Panel Apps
+# PinBar
 
 A GNOME Shell extension that pins selected installed graphical applications to
 the top panel. Search the application catalogue in Preferences, then click an
@@ -25,26 +25,26 @@ icon to launch or focus its application.
 
 ## Install (development)
 
-The extension's UUID is `panel-apps@lisandro.local`; it must live under a
+The extension's UUID is `pinbar@lisandro.local`; it must live under a
 directory of that name.
 
 ```sh
 # Compile the GSettings schema (strict)
-glib-compile-schemas --strict panel-apps@lisandro.local/schemas/
+glib-compile-schemas --strict pinbar@lisandro.local/schemas/
 
 # Link the extension into the per-user extensions directory (no root needed)
-ln -s "$PWD/panel-apps@lisandro.local" \
-    ~/.local/share/gnome-shell/extensions/panel-apps@lisandro.local
+ln -s "$PWD/pinbar@lisandro.local" \
+    ~/.local/share/gnome-shell/extensions/pinbar@lisandro.local
 
 # Make the schema visible to the running session (per-user schema dir)
 mkdir -p ~/.local/share/glib-2.0/schemas
-cp panel-apps@lisandro.local/schemas/org.gnome.shell.extensions.panel-apps.gschema.xml \
+cp pinbar@lisandro.local/schemas/org.gnome.shell.extensions.pinbar.gschema.xml \
     ~/.local/share/glib-2.0/schemas/
 glib-compile-schemas ~/.local/share/glib-2.0/schemas/
 
 # Enable and open preferences
-gnome-extensions enable panel-apps@lisandro.local
-gnome-extensions prefs panel-apps@lisandro.local
+gnome-extensions enable pinbar@lisandro.local
+gnome-extensions prefs pinbar@lisandro.local
 ```
 
 Source changes require a new Shell process: toggling the extension does not
@@ -55,20 +55,20 @@ Do **not** use Alt+F2 → `r` on Wayland.
 ## Build (packaged zip)
 
 ```sh
-glib-compile-schemas --strict panel-apps@lisandro.local/schemas/
+glib-compile-schemas --strict pinbar@lisandro.local/schemas/
 gnome-extensions pack --force \
     --extra-source=appCatalog.js \
-    --extra-source=panelApps.js \
+    --extra-source=pinBar.js \
     --extra-source=settings.js \
-    panel-apps@lisandro.local
+    pinbar@lisandro.local
 ```
 
 `metadata.json`, `extension.js`, `prefs.js`, `stylesheet.css` and the `schemas/`
 directory are included automatically; only the additional JS modules need
 `--extra-source`. `gnome-extensions install` compiles the schema on install.
 
-Install the resulting `panel-apps@lisandro.local.shell-extension.zip` with
-`gnome-extensions install panel-apps@lisandro.local.shell-extension.zip`.
+Install the resulting `pinbar@lisandro.local.shell-extension.zip` with
+`gnome-extensions install pinbar@lisandro.local.shell-extension.zip`.
 
 ## Usage
 
@@ -92,7 +92,7 @@ Install the resulting `panel-apps@lisandro.local.shell-extension.zip` with
 
 ## Debugging
 
-- Journal: `journalctl --user -f -o cat | grep -i panel-apps`
+- Journal: `journalctl --user -f -o cat | grep -i pinbar`
 - Nested session: `dbus-run-session -- gnome-shell --headless --wayland --devkit --virtual-monitor=1280x720`
 - Looking Glass: run `lg` in the Alt+F2 prompt (development-tools must be on).
 

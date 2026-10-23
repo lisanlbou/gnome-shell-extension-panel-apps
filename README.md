@@ -1,4 +1,4 @@
-# Panel Apps
+# PinBar
 
 A GNOME Shell extension that pins selected installed applications to the top
 panel. Search the application catalogue in Preferences, then click an icon to
@@ -30,12 +30,12 @@ See [`INSTALL.md`](INSTALL.md), or build and install the packaged bundle:
 
 ```sh
 ./build.sh
-gnome-extensions install panel-apps@lisandro.local.shell-extension.zip
+gnome-extensions install pinbar@lisandro.local.shell-extension.zip
 ```
 
 ## Documentation
 
-- [Extension README](panel-apps@lisandro.local/README.md) — usage, settings,
+- [Extension README](pinbar@lisandro.local/README.md) — usage, settings,
   limitations and compatibility.
 
 ## Testing
@@ -54,4 +54,4 @@ gjs -m tests/run-tests.js
 
 ## License
 
-GPL-2.0-or-later. See [LICENSE](panel-apps@lisandro.local/LICENSE).
+GPL-2.0-or-later. See [LICENSE](pinbar@lisandro.local/LICENSE).

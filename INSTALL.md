@@ -1,6 +1,6 @@
-# Panel Apps — Installation
+# PinBar — Installation
 
-Steps to install the **Panel Apps** extension (UUID `panel-apps@lisandro.local`)
+Steps to install the **PinBar** extension (UUID `pinbar@lisandro.local`)
 for GNOME Shell 50 on Fedora Workstation (Wayland).
 
 No root privileges are required — everything installs under `~/.local`.
@@ -13,19 +13,19 @@ No root privileges are required — everything installs under `~/.local`.
 ## 2. Install (development, from this checkout)
 
 Run these from the project root (the directory that contains
-`panel-apps@lisandro.local/`):
+`pinbar@lisandro.local/`):
 
 ```sh
 # 2a. Compile the GSettings schema (strict)
-glib-compile-schemas --strict panel-apps@lisandro.local/schemas/
+glib-compile-schemas --strict pinbar@lisandro.local/schemas/
 
 # 2b. Link the extension into the per-user extensions directory
-ln -s "$PWD/panel-apps@lisandro.local" \
-    ~/.local/share/gnome-shell/extensions/panel-apps@lisandro.local
+ln -s "$PWD/pinbar@lisandro.local" \
+    ~/.local/share/gnome-shell/extensions/pinbar@lisandro.local
 
 # 2c. Make the schema visible to the running session
 mkdir -p ~/.local/share/glib-2.0/schemas
-cp panel-apps@lisandro.local/schemas/org.gnome.shell.extensions.panel-apps.gschema.xml \
+cp pinbar@lisandro.local/schemas/org.gnome.shell.extensions.pinbar.gschema.xml \
     ~/.local/share/glib-2.0/schemas/
 glib-compile-schemas ~/.local/share/glib-2.0/schemas/
 ```
@@ -40,8 +40,8 @@ glib-compile-schemas ~/.local/share/glib-2.0/schemas/
 After logging back in:
 
 ```sh
-gnome-extensions enable panel-apps@lisandro.local
-gnome-extensions prefs panel-apps@lisandro.local
+gnome-extensions enable pinbar@lisandro.local
+gnome-extensions prefs pinbar@lisandro.local
 ```
 
 Then:
@@ -56,13 +56,13 @@ Build the bundle and install it:
 
 ```sh
 ./build.sh
-gnome-extensions install panel-apps@lisandro.local.shell-extension.zip
+gnome-extensions install pinbar@lisandro.local.shell-extension.zip
 ```
 
 `build.sh` runs the unit tests, compiles the schema, and packages the whole
 extension directory into a zip using `gnome-extensions pack`. `metadata.json`,
 `extension.js`, `prefs.js`, `stylesheet.css` and `schemas/` are packed
-automatically; only the extra JS modules (`appCatalog.js`, `panelApps.js`,
+automatically; only the extra JS modules (`appCatalog.js`, `pinBar.js`,
 `settings.js`) need `--extra-source`. `gnome-extensions install` compiles the
 schema on install.
 
@@ -71,11 +71,11 @@ Then log out/in and enable as in step 3.
 ## 5. Uninstall
 
 ```sh
-gnome-extensions uninstall panel-apps@lisandro.local
+gnome-extensions uninstall pinbar@lisandro.local
 
 # If you used the development install, also remove the symlink and schema:
-rm -f ~/.local/share/gnome-shell/extensions/panel-apps@lisandro.local
-rm -f ~/.local/share/glib-2.0/schemas/org.gnome.shell.extensions.panel-apps.gschema.xml
+rm -f ~/.local/share/gnome-shell/extensions/pinbar@lisandro.local
+rm -f ~/.local/share/glib-2.0/schemas/org.gnome.shell.extensions.pinbar.gschema.xml
 glib-compile-schemas ~/.local/share/glib-2.0/schemas/
 ```
 
@@ -85,6 +85,6 @@ glib-compile-schemas ~/.local/share/glib-2.0/schemas/
   started before the extension existed. Log out and log back in.
 - **`gnome-extensions prefs` prints usage** — the command is `prefs`
   (not `pref`).
-- **To verify it loaded** — `gnome-extensions info panel-apps@lisandro.local`
+- **To verify it loaded** — `gnome-extensions info pinbar@lisandro.local`
   should show `State: ACTIVE`.
-- **To watch for errors** — `journalctl --user -f -o cat | grep -i panel-apps`.
+- **To watch for errors** — `journalctl --user -f -o cat | grep -i pinbar`.

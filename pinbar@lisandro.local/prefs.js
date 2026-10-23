@@ -10,13 +10,13 @@ import { dedupeDesktopIds, moveItem, normalizeIconSize, normalizePanelBox, norma
 
 const ICON_PIXEL_SIZE = 24;
 
-export default class PanelAppsPreferences extends ExtensionPreferences {
+export default class PinBarPreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
         this._settings = this.getSettings();
         this._apps = this._loadApps();
 
         const page = new Adw.PreferencesPage({
-            title: 'Panel Apps',
+            title: 'PinBar',
             icon_name: 'view-app-grid-symbolic',
         });
         window.add(page);

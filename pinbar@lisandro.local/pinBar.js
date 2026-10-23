@@ -1,4 +1,4 @@
-// panelApps.js — panel container, per-app icon buttons and context menus.
+// pinBar.js — panel container, per-app icon buttons and context menus.
 //
 // Runs inside the GNOME Shell process. The container is a PanelMenu.Button
 // because Main.panel.addToStatusArea() requires it; each pinned app is its
@@ -23,11 +23,11 @@ import {
 const FALLBACK_ICON_NAME = 'application-x-executable-symbolic';
 
 const AppButton = GObject.registerClass({
-    GTypeName: 'PanelAppsAppButton',
+    GTypeName: 'PinBarAppButton',
 }, class AppButton extends St.Button {
     _init(app, options) {
         super._init({
-            style_class: 'panel-apps-app-button',
+            style_class: 'pinbar-app-button',
             reactive: true,
             can_focus: true,
             track_hover: true,
@@ -45,7 +45,7 @@ const AppButton = GObject.registerClass({
         });
         this._icon = new St.Icon({ icon_size: options.iconSize });
         this._dot = new St.Widget({
-            style_class: 'panel-apps-running-dot',
+            style_class: 'pinbar-running-dot',
             visible: false,
         });
         this._box.add_child(this._icon);
@@ -72,7 +72,7 @@ const AppButton = GObject.registerClass({
         try {
             this._app.activate();
         } catch (e) {
-            logError(e, 'panel-apps: application activation failed');
+            logError(e, 'pinbar: application activation failed');
         }
     }
 
@@ -97,7 +97,7 @@ const AppButton = GObject.registerClass({
                     try {
                         this._app.open_new_window(-1);
                     } catch (e) {
-                        logError(e, 'panel-apps: open new window failed');
+                        logError(e, 'pinbar: open new window failed');
                     }
                 });
                 this._menu.addMenuItem(item);
@@ -140,11 +140,11 @@ const AppButton = GObject.registerClass({
     }
 });
 
-export const PanelApps = GObject.registerClass({
-    GTypeName: 'PanelAppsIndicator',
-}, class PanelApps extends PanelMenu.Button {
+export const PinBar = GObject.registerClass({
+    GTypeName: 'PinBarIndicator',
+}, class PinBar extends PanelMenu.Button {
     _init(settings, catalog) {
-        super._init(0.5, 'Panel Apps', false);
+        super._init(0.5, 'PinBar', false);
 
         this._settings = settings;
         this._catalog = catalog;
@@ -157,7 +157,7 @@ export const PanelApps = GObject.registerClass({
         // so it never toggles an empty menu.
         this._clickGesture.set_enabled(false);
 
-        this._box = new St.BoxLayout({ style_class: 'panel-apps-indicator' });
+        this._box = new St.BoxLayout({ style_class: 'pinbar-indicator' });
         this.add_child(this._box);
     }
 
@@ -165,7 +165,7 @@ export const PanelApps = GObject.registerClass({
         this._connectSignals();
         this._rebuild();
         Main.panel.addToStatusArea(
-            'panel-apps', this, this._panelPosition(), this._panelBox());
+            'pinbar', this, this._panelPosition(), this._panelBox());
     }
 
     _panelBox() {

@@ -7,14 +7,14 @@
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 import { AppCatalog } from './appCatalog.js';
-import { PanelApps } from './panelApps.js';
+import { PinBar } from './pinBar.js';
 
-export default class PanelAppsExtension extends Extension {
+export default class PinBarExtension extends Extension {
     enable() {
         this._settings = this.getSettings();
         this._catalog = new AppCatalog();
-        this._panelApps = new PanelApps(this._settings, this._catalog);
-        this._panelApps.enable();
+        this._pinBar = new PinBar(this._settings, this._catalog);
+        this._pinBar.enable();
 
         // Placement changes require re-adding the indicator to the panel.
         this._placementIds = [
@@ -24,10 +24,10 @@ export default class PanelAppsExtension extends Extension {
     }
 
     _recreate() {
-        this._panelApps.destroy();
-        this._panelApps = null;
-        this._panelApps = new PanelApps(this._settings, this._catalog);
-        this._panelApps.enable();
+        this._pinBar.destroy();
+        this._pinBar = null;
+        this._pinBar = new PinBar(this._settings, this._catalog);
+        this._pinBar.enable();
     }
 
     disable() {
@@ -37,9 +37,9 @@ export default class PanelAppsExtension extends Extension {
             this._placementIds = null;
         }
 
-        if (this._panelApps) {
-            this._panelApps.destroy();
-            this._panelApps = null;
+        if (this._pinBar) {
+            this._pinBar.destroy();
+            this._pinBar = null;
         }
         this._catalog = null;
         this._settings = null;
