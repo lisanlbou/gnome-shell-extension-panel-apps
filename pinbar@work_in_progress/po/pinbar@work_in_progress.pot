@@ -1,0 +1,148 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PinBar package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PinBar 0.1.0-alpha\n"
+"Report-Msgid-Bugs-To: https://github.com/lisanlbou/gnome-shell-extension-"
+"panel-apps/issues\n"
+"POT-Creation-Date: 2026-10-23 15:34-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: pinBar.js:123
+msgid "Open New Window"
+msgstr ""
+
+#: pinBar.js:134
+msgid "Unpin"
+msgstr ""
+
+#: pinBar.js:159
+#, javascript-format
+msgid "%s — running"
+msgstr ""
+
+#: prefs.js:127
+msgid "Pinned applications"
+msgstr ""
+
+#: prefs.js:128
+msgid ""
+"Apps shown in the top panel, in order. Missing apps are unavailable until "
+"reinstalled."
+msgstr ""
+
+#: prefs.js:157
+msgid "No applications pinned"
+msgstr ""
+
+#: prefs.js:158
+msgid "Search below and enable an application to pin it."
+msgstr ""
+
+#: prefs.js:174
+#, javascript-format
+msgid "%s — unavailable"
+msgstr ""
+
+#: prefs.js:185
+msgid "Move up"
+msgstr ""
+
+#: prefs.js:191
+msgid "Move down"
+msgstr ""
+
+#: prefs.js:208
+msgid "All applications"
+msgstr ""
+
+#: prefs.js:209
+msgid "Search by name or desktop ID."
+msgstr ""
+
+#: prefs.js:214
+msgid "Search applications…"
+msgstr ""
+
+#: prefs.js:271
+msgctxt "Panel box"
+msgid "Left"
+msgstr ""
+
+#: prefs.js:273
+msgctxt "Panel box"
+msgid "Center"
+msgstr ""
+
+#: prefs.js:275
+msgctxt "Panel box"
+msgid "Right"
+msgstr ""
+
+#: prefs.js:281
+msgid "Panel"
+msgstr ""
+
+#: prefs.js:287
+msgid "Placement"
+msgstr ""
+
+#: prefs.js:288
+msgid "Where the icons appear in the top panel."
+msgstr ""
+
+#: prefs.js:297
+msgid "Panel box"
+msgstr ""
+
+#: prefs.js:308
+msgid "Panel position"
+msgstr ""
+
+#: prefs.js:309
+msgid "Index within the selected panel box."
+msgstr ""
+
+#: prefs.js:323
+msgid "Appearance"
+msgstr ""
+
+#: prefs.js:328
+msgid "Icon size"
+msgstr ""
+
+#: prefs.js:342
+msgid "Running indicator"
+msgstr ""
+
+#: prefs.js:343
+msgid "Show a small dot under running applications."
+msgstr ""
+
+#: prefs.js:354
+msgid "About"
+msgstr ""
+
+#: prefs.js:361
+msgid ""
+"Pin favourite applications to the top panel. Search installed apps in "
+"Preferences and click an icon to launch or focus it."
+msgstr ""
+
+#: prefs.js:365
+msgid "Version"
+msgstr ""
+
+#: prefs.js:366
+msgid "Author"
+msgstr ""

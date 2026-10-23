@@ -1,0 +1,151 @@
+# Spanish translations for PinBar.
+# Copyright (C) 2026 PinBar contributors
+# This file is distributed under the same license as the PinBar package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PinBar 0.1.0-alpha\n"
+"Report-Msgid-Bugs-To: https://github.com/lisanlbou/gnome-shell-extension-"
+"panel-apps/issues\n"
+"POT-Creation-Date: 2026-10-23 15:34-0300\n"
+"PO-Revision-Date: 2026-10-23 15:35-0300\n"
+"Last-Translator: PinBar contributors\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: pinBar.js:123
+msgid "Open New Window"
+msgstr "Abrir en una ventana nueva"
+
+#: pinBar.js:134
+msgid "Unpin"
+msgstr "Desanclar"
+
+#: pinBar.js:159
+#, javascript-format
+msgid "%s — running"
+msgstr "%s — en ejecución"
+
+#: prefs.js:127
+msgid "Pinned applications"
+msgstr "Aplicaciones ancladas"
+
+#: prefs.js:128
+msgid ""
+"Apps shown in the top panel, in order. Missing apps are unavailable until "
+"reinstalled."
+msgstr ""
+"Aplicaciones mostradas en la barra superior, en orden. Las aplicaciones "
+"ausentes no están disponibles hasta que se reinstalen."
+
+#: prefs.js:157
+msgid "No applications pinned"
+msgstr "No hay aplicaciones ancladas"
+
+#: prefs.js:158
+msgid "Search below and enable an application to pin it."
+msgstr "Busca abajo y activa una aplicación para anclarla."
+
+#: prefs.js:174
+#, javascript-format
+msgid "%s — unavailable"
+msgstr "%s — no disponible"
+
+#: prefs.js:185
+msgid "Move up"
+msgstr "Mover arriba"
+
+#: prefs.js:191
+msgid "Move down"
+msgstr "Mover abajo"
+
+#: prefs.js:208
+msgid "All applications"
+msgstr "Todas las aplicaciones"
+
+#: prefs.js:209
+msgid "Search by name or desktop ID."
+msgstr "Busca por nombre o ID de escritorio."
+
+#: prefs.js:214
+msgid "Search applications…"
+msgstr "Buscar aplicaciones…"
+
+#: prefs.js:271
+msgctxt "Panel box"
+msgid "Left"
+msgstr "Izquierda"
+
+#: prefs.js:273
+msgctxt "Panel box"
+msgid "Center"
+msgstr "Centro"
+
+#: prefs.js:275
+msgctxt "Panel box"
+msgid "Right"
+msgstr "Derecha"
+
+#: prefs.js:281
+msgid "Panel"
+msgstr "Panel"
+
+#: prefs.js:287
+msgid "Placement"
+msgstr "Ubicación"
+
+#: prefs.js:288
+msgid "Where the icons appear in the top panel."
+msgstr "Dónde aparecen los iconos en la barra superior."
+
+#: prefs.js:297
+msgid "Panel box"
+msgstr "Sección del panel"
+
+#: prefs.js:308
+msgid "Panel position"
+msgstr "Posición en el panel"
+
+#: prefs.js:309
+msgid "Index within the selected panel box."
+msgstr "Índice dentro de la sección del panel seleccionada."
+
+#: prefs.js:323
+msgid "Appearance"
+msgstr "Apariencia"
+
+#: prefs.js:328
+msgid "Icon size"
+msgstr "Tamaño del icono"
+
+#: prefs.js:342
+msgid "Running indicator"
+msgstr "Indicador de ejecución"
+
+#: prefs.js:343
+msgid "Show a small dot under running applications."
+msgstr "Muestra un pequeño punto bajo las aplicaciones en ejecución."
+
+#: prefs.js:354
+msgid "About"
+msgstr "Acerca de"
+
+#: prefs.js:361
+msgid ""
+"Pin favourite applications to the top panel. Search installed apps in "
+"Preferences and click an icon to launch or focus it."
+msgstr ""
+"Ancla tus aplicaciones favoritas a la barra superior. Busca las aplicaciones "
+"instaladas en Preferencias y haz clic en un icono para lanzarla o enfocarla."
+
+#: prefs.js:365
+msgid "Version"
+msgstr "Versión"
+
+#: prefs.js:366
+msgid "Author"
+msgstr "Autor"

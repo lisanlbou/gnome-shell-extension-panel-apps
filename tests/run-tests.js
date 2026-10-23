@@ -50,6 +50,14 @@ eq(S.normalizePanelPosition(-3), 0, 'negative position -> 0');
 eq(S.normalizePanelPosition(2.9), 2, 'fractional position floored');
 eq(S.normalizePanelPosition('x'), 0, 'non-numeric position -> 0');
 
+// isPinnableId
+ok(S.isPinnableId('org.gnome.Terminal.desktop'), 'isPinnableId accepts a desktop ID');
+ok(!S.isPinnableId(null), 'isPinnableId rejects null (Gio.AppInfo.get_id() default)');
+ok(!S.isPinnableId(undefined), 'isPinnableId rejects undefined');
+ok(!S.isPinnableId(''), 'isPinnableId rejects empty string');
+ok(!S.isPinnableId('   '), 'isPinnableId rejects whitespace-only string');
+ok(!S.isPinnableId(42), 'isPinnableId rejects non-strings');
+
 // dedupeDesktopIds
 eq(S.dedupeDesktopIds(['a.desktop', 'b.desktop', 'a.desktop']),
    ['a.desktop', 'b.desktop'], 'dedupe preserves first occurrence');

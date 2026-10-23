@@ -16,8 +16,10 @@ Vibe-coded with DeepSeek (coding & planning) and ChatGPT (planning).
 - Searchable application picker (by localized name or desktop ID) in Preferences.
 - Move Up / Move Down ordering, panel placement (left/center/right + index),
   icon size (16–32) and a running indicator.
-- Right-click an icon for Open New Window (when supported) and Unpin.
+- Right-click an icon (or Menu / Shift+F10 from the keyboard) for Open New
+  Window (when supported) and Unpin.
 - Event-driven catalogue updates — no polling.
+- Spanish and Brazilian Portuguese translations.
 
 ## Requirements
 
@@ -43,7 +45,8 @@ gnome-extensions install pinbar@work_in_progress.shell-extension.zip
 ## Testing
 
 ```sh
-gjs -m tests/run-tests.js
+gjs -m tests/run-tests.js   # 31 pure-logic checks
+./build.sh                  # tests + schema + catalogs + package
 ```
 
 ## Screenshots

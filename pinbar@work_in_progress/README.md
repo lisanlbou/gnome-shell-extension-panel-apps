@@ -19,8 +19,11 @@ icon to launch or focus its application.
 
 ## Requirements
 
-- Fedora Workstation (tested on Fedora 44) on Wayland
-- GNOME Shell 50 (tested on 50.5)
+- A GNOME Shell session (Wayland or X11)
+- **Declared and tested:** GNOME Shell 50 (tested on 50.5, Fedora 44)
+- The source is written to stay compatible with GNOME Shell 45–50 (see
+  Compatibility); older/newer majors must be runtime-tested before being
+  declared in `metadata.json`
 - No Node.js, Python daemon or native helper is required at runtime.
 
 ## Install (development)
@@ -55,11 +58,25 @@ Do **not** use Alt+F2 → `r` on Wayland.
 ## Build (packaged zip)
 
 ```sh
+./build.sh
+```
+
+`build.sh` runs the unit tests, compiles the schema, validates the translation
+catalogs and packs the extension (including `compat.js`, `LICENSE`, docs and
+the compiled `es`/`pt_BR` message catalogs). To pack manually:
+
+```sh
 glib-compile-schemas --strict pinbar@work_in_progress/schemas/
 gnome-extensions pack --force \
     --extra-source=appCatalog.js \
+    --extra-source=compat.js \
     --extra-source=pinBar.js \
     --extra-source=settings.js \
+    --extra-source=LICENSE \
+    --extra-source=README.md \
+    --extra-source=CHANGELOG.md \
+    --podir=po \
+    --gettext-domain=pinbar@work_in_progress \
     pinbar@work_in_progress
 ```
 
@@ -76,7 +93,8 @@ Install the resulting `pinbar@work_in_progress.shell-extension.zip` with
 2. Search installed applications by localized name or desktop ID.
 3. Toggle an application's switch to pin it; use Move Up/Move Down to reorder.
 4. Left-click a panel icon to launch or focus the app (no new instance).
-5. Right-click an icon for Open New Window (when supported) and Unpin.
+5. Right-click an icon (or focus it and press Menu / Shift+F10) for Open New
+   Window (when supported) and Unpin.
 6. Configure placement, icon size and the running dot under
    Preferences → Panel.
 
@@ -98,16 +116,33 @@ Install the resulting `pinbar@work_in_progress.shell-extension.zip` with
 
 ## Testing
 
-Run the pure-logic tests with `gjs -m tests/run-tests.js` (25 checks: desktop-ID
-dedupe/order and settings validation).
+Run the pure-logic tests with `gjs -m tests/run-tests.js` (31 checks: desktop-ID
+dedupe/order, pinnable-ID validation and settings validation).
+
+Translations live in `po/` (`pinbar@work_in_progress.pot`, `es`, `pt_BR`).
+Regenerate the template after changing user-visible strings:
+
+```sh
+cd pinbar@work_in_progress
+find . -type f -name '*.js' -not -path './schemas/*' -not -path './po/*' \
+  -print > /tmp/pinbar-js-sources.txt
+xgettext --language=JavaScript --from-code=UTF-8 \
+  --keyword=_ --keyword=ngettext:1,2 --keyword=pgettext:1c,2 \
+  -f /tmp/pinbar-js-sources.txt -o po/pinbar@work_in_progress.pot
+msgmerge --update po/es.po po/pinbar@work_in_progress.pot
+msgmerge --update po/pt_BR.po po/pinbar@work_in_progress.pot
+```
 
 Verified on GNOME Shell 50.5 (headless nested Wayland session):
 
 - Extension enables to `ACTIVE` and disables cleanly; 10× enable/disable cycles
   with no errors or duplicate status-area entries.
+- Live `gsettings` changes (placement, icon size, running indicator, pin/unpin
+  including duplicate and bogus desktop IDs) apply without errors.
 - Catalogue matches the desktop registry: 173 registered → 85 visible after
   `should_show()` (22 Flatpak, 8 user entries, 55 system RPMs).
-- Preferences (picker + panel config) loads without JS or markup errors.
+- Preferences (picker + panel config) load without JS or markup errors, in both
+  the C and `es` locales.
 
 Not verified in a headless environment (manual checklist, pending a real
 Wayland session): visual click-to-launch/focus, keyboard navigation, HiDPI
@@ -125,17 +160,37 @@ scaling, lock/unlock, suspend/resume, and coexistence with AppIndicator.
 
 ## Compatibility
 
-- GNOME 50 (50.5): tested, working.
-- GNOME 51: not tested here (no 51 install). Code uses the 51-safe
-  `St.BoxLayout.orientation` API and `PopupMenu.toggle()` (no open/close args),
-  but 51 must be validated separately before being listed as supported.
+- **GNOME 50 (50.5): tested, working.** `metadata.json` declares `["50"]` only;
+  versions are declared exclusively after real runtime tests.
+- The source avoids version-specific breakage found in GNOME 45–51:
+  - The container uses `PanelMenu.Button`'s long-standing `dontCreateMenu`
+    argument instead of the GNOME 50-only private `_clickGesture` field
+    (absent in 45–49, where the old code crashed on enable).
+  - `compat.js` selects `St.BoxLayout`'s `vertical` (GNOME 45–47) or
+    `orientation` (GNOME 48+) property by runtime feature detection; GNOME 51
+    (development) removes `vertical`.
+  - Application filtering uses `parentalControlsManager.getDefault()` /
+    `shouldShowApp()` / `app-filter-changed`, verified unchanged in the 45–50
+    sources, with a safe `should_show()` fallback.
+  - Preferences avoid `Gtk.ListBox.remove_all()` (GTK 4.12+), keeping older
+    GTK 4 baselines (e.g. GNOME 45 distros) working.
+- GNOME 45–49 and 51 have **not** been runtime-tested here and are not
+  declared supported; test them in isolated sessions before extending
+  `shell-version`.
 - **Private API (`Main.panel.menuManager`):** each app icon's right-click menu is
   a `PopupMenu.PopupMenu` registered via `Main.panel.menuManager.addMenu()` (a
   private `PopupMenu.PopupMenuManager` from `ui/panel.js`). This lets the panel
   coordinate open/close state, keyboard navigation and dismissal the same way
-  `addToStatusArea()` registers a `PanelMenu.Button`'s own menu. It is valid for
-  the declared `shell-version` `["50"]` and must be re-checked before any future
-  GNOME major is listed as supported.
+  `addToStatusArea()` registers a `PanelMenu.Button`'s own menu. Verified present
+  with the same shape in the GNOME 45–50 sources; must be re-checked before any
+  future GNOME major is listed as supported.
+
+## Translations
+
+English is the source language. Spanish (`es`) and Brazilian Portuguese
+(`pt_BR`) ship with the packaged zip (`gettext-domain`:
+`pinbar@work_in_progress`). Dynamic application names and desktop IDs are never
+translated — they come from the system's localized application metadata.
 
 ## License
 

@@ -46,6 +46,15 @@ export function normalizePanelPosition(value) {
 }
 
 /**
+ * Whether a value is a usable desktop ID. Gio.AppInfo.get_id() legitimately
+ * returns null for ID-less entries, and such entries cannot be pinned,
+ * searched by ID, sorted or stored, so every consumer rejects them up front.
+ */
+export function isPinnableId(id) {
+    return typeof id === 'string' && id.trim().length > 0;
+}
+
+/**
  * Deduplicate a list of desktop IDs, preserving the first occurrence of each
  * and dropping empty/blank entries and non-strings.
  */

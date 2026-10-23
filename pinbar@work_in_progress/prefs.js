@@ -5,8 +5,19 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Gtk from 'gi://Gtk?version=4.0';
 import Adw from 'gi://Adw';
-import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
-import { dedupeDesktopIds, moveItem, normalizeIconSize, normalizePanelBox, normalizePanelPosition } from './settings.js';
+import {
+    ExtensionPreferences,
+    gettext as _,
+    pgettext,
+} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
+import {
+    dedupeDesktopIds,
+    isPinnableId,
+    moveItem,
+    normalizeIconSize,
+    normalizePanelBox,
+    normalizePanelPosition,
+} from './settings.js';
 
 const ICON_PIXEL_SIZE = 24;
 
@@ -58,9 +69,13 @@ export default class PinBarPreferences extends ExtensionPreferences {
             } catch (e) {
                 continue;
             }
+            // get_id() legitimately returns null for entries without a stable
+            // desktop ID; they cannot be pinned, searched or sorted safely.
+            if (!isPinnableId(id) || !name)
+                continue;
             if (!info.should_show())
                 continue;
-            apps.push({ id, name, gicon });
+            apps.push({id, name, gicon});
         }
         apps.sort((a, b) => a.name.localeCompare(b.name));
         return apps;
@@ -109,26 +124,38 @@ export default class PinBarPreferences extends ExtensionPreferences {
 
     _buildPinnedGroup(page) {
         this._pinnedGroup = new Adw.PreferencesGroup({
-            title: 'Pinned applications',
-            description: 'Apps shown in the top panel, in order. Missing apps are unavailable until reinstalled.',
+            title: _('Pinned applications'),
+            description: _('Apps shown in the top panel, in order. Missing apps are unavailable until reinstalled.'),
         });
         page.add(this._pinnedGroup);
 
-        this._pinnedList = new Gtk.ListBox({ selection_mode: Gtk.SelectionMode.NONE });
+        this._pinnedList = new Gtk.ListBox({selection_mode: Gtk.SelectionMode.NONE});
         this._pinnedList.add_css_class('boxed-list');
         this._pinnedGroup.add(this._pinnedList);
 
         this._rebuildPinned();
     }
 
+    // Gtk.ListBox.remove_all() needs GTK 4.12, but GNOME 45 distro baselines
+    // can ship older GTK4 (e.g. Debian 12 with 4.8), so remove children
+    // manually for portability.
+    _clearList(list) {
+        let child = list.get_first_child();
+        while (child) {
+            const next = child.get_next_sibling();
+            list.remove(child);
+            child = next;
+        }
+    }
+
     _rebuildPinned() {
-        this._pinnedList.remove_all();
+        this._clearList(this._pinnedList);
 
         const pinned = this._getPinned();
         if (pinned.length === 0) {
             this._pinnedList.append(new Adw.ActionRow({
-                title: 'No applications pinned',
-                subtitle: 'Search below and enable an application to pin it.',
+                title: _('No applications pinned'),
+                subtitle: _('Search below and enable an application to pin it.'),
                 sensitive: false,
             }));
             return;
@@ -144,24 +171,24 @@ export default class PinBarPreferences extends ExtensionPreferences {
         const missing = !app;
         const row = new Adw.ActionRow({
             title: this._esc(app ? app.name : id),
-            subtitle: this._esc(missing ? `${id} — unavailable` : id),
+            subtitle: this._esc(missing ? _('%s — unavailable').format(id) : id),
         });
 
         const img = app?.gicon
-            ? new Gtk.Image({ gicon: app.gicon, pixel_size: ICON_PIXEL_SIZE })
-            : new Gtk.Image({ icon_name: 'dialog-question-symbolic', pixel_size: ICON_PIXEL_SIZE });
+            ? new Gtk.Image({gicon: app.gicon, pixel_size: ICON_PIXEL_SIZE})
+            : new Gtk.Image({icon_name: 'dialog-question-symbolic', pixel_size: ICON_PIXEL_SIZE});
         row.add_prefix(img);
 
-        const buttons = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL, spacing: 0 });
+        const buttons = new Gtk.Box({orientation: Gtk.Orientation.HORIZONTAL, spacing: 0});
         const up = new Gtk.Button({
             icon_name: 'go-up-symbolic',
-            tooltip_text: 'Move up',
+            tooltip_text: _('Move up'),
             sensitive: index > 0,
             has_frame: false,
         });
         const down = new Gtk.Button({
             icon_name: 'go-down-symbolic',
-            tooltip_text: 'Move down',
+            tooltip_text: _('Move down'),
             sensitive: index < total - 1,
             has_frame: false,
         });
@@ -178,13 +205,13 @@ export default class PinBarPreferences extends ExtensionPreferences {
 
     _buildAllAppsGroup(page) {
         const group = new Adw.PreferencesGroup({
-            title: 'All applications',
-            description: 'Search by name or desktop ID.',
+            title: _('All applications'),
+            description: _('Search by name or desktop ID.'),
         });
         page.add(group);
 
         this._searchEntry = new Gtk.SearchEntry({
-            placeholder_text: 'Search applications…',
+            placeholder_text: _('Search applications…'),
             margin_top: 6,
             margin_bottom: 6,
             margin_start: 6,
@@ -193,7 +220,7 @@ export default class PinBarPreferences extends ExtensionPreferences {
         this._searchEntry.connect('search-changed', () => this._rebuildAllApps());
         group.add(this._searchEntry);
 
-        this._allAppsList = new Gtk.ListBox({ selection_mode: Gtk.SelectionMode.NONE });
+        this._allAppsList = new Gtk.ListBox({selection_mode: Gtk.SelectionMode.NONE});
         this._allAppsList.add_css_class('boxed-list');
         group.add(this._allAppsList);
 
@@ -201,7 +228,7 @@ export default class PinBarPreferences extends ExtensionPreferences {
     }
 
     _rebuildAllApps() {
-        this._allAppsList.remove_all();
+        this._clearList(this._allAppsList);
 
         const query = this._searchEntry.get_text().trim().toLocaleLowerCase();
         const pinned = new Set(this._getPinned());
@@ -222,11 +249,11 @@ export default class PinBarPreferences extends ExtensionPreferences {
         });
 
         const img = app.gicon
-            ? new Gtk.Image({ gicon: app.gicon, pixel_size: ICON_PIXEL_SIZE })
-            : new Gtk.Image({ icon_name: 'application-x-executable-symbolic', pixel_size: ICON_PIXEL_SIZE });
+            ? new Gtk.Image({gicon: app.gicon, pixel_size: ICON_PIXEL_SIZE})
+            : new Gtk.Image({icon_name: 'application-x-executable-symbolic', pixel_size: ICON_PIXEL_SIZE});
         row.add_prefix(img);
 
-        const sw = new Gtk.Switch({ active, valign: Gtk.Align.CENTER });
+        const sw = new Gtk.Switch({active, valign: Gtk.Align.CENTER});
         row.add_suffix(sw);
         row.activatable_widget = sw;
         sw.connect('notify::active', () => this._onToggle(app.id, sw.active));
@@ -237,19 +264,28 @@ export default class PinBarPreferences extends ExtensionPreferences {
     // --- panel configuration --------------------------------------------------
 
     _panelBoxLabel(box) {
-        return box.charAt(0).toUpperCase() + box.slice(1);
+        // Keep the combobox entries translated but distinguishable from
+        // generic words like "Left"/"Right" elsewhere in the UI.
+        switch (box) {
+        case 'left':
+            return pgettext('Panel box', 'Left');
+        case 'center':
+            return pgettext('Panel box', 'Center');
+        default:
+            return pgettext('Panel box', 'Right');
+        }
     }
 
     _buildPanelPage(window) {
         const page = new Adw.PreferencesPage({
-            title: 'Panel',
+            title: _('Panel'),
             icon_name: 'org.gnome.Settings-panel-symbolic',
         });
         window.add(page);
 
         const placement = new Adw.PreferencesGroup({
-            title: 'Placement',
-            description: 'Where the icons appear in the top panel.',
+            title: _('Placement'),
+            description: _('Where the icons appear in the top panel.'),
         });
         page.add(placement);
 
@@ -258,7 +294,7 @@ export default class PinBarPreferences extends ExtensionPreferences {
         for (const box of boxes)
             boxModel.append(this._panelBoxLabel(box));
         const boxRow = new Adw.ComboRow({
-            title: 'Panel box',
+            title: _('Panel box'),
             model: boxModel,
             selected: boxes.indexOf(normalizePanelBox(this._settings.get_string('panel-box'))),
         });
@@ -269,8 +305,8 @@ export default class PinBarPreferences extends ExtensionPreferences {
         placement.add(boxRow);
 
         const positionRow = new Adw.SpinRow({
-            title: 'Panel position',
-            subtitle: 'Index within the selected panel box.',
+            title: _('Panel position'),
+            subtitle: _('Index within the selected panel box.'),
             adjustment: new Gtk.Adjustment({
                 lower: 0,
                 upper: 100,
@@ -284,12 +320,12 @@ export default class PinBarPreferences extends ExtensionPreferences {
         placement.add(positionRow);
 
         const appearance = new Adw.PreferencesGroup({
-            title: 'Appearance',
+            title: _('Appearance'),
         });
         page.add(appearance);
 
         const iconSizeRow = new Adw.SpinRow({
-            title: 'Icon size',
+            title: _('Icon size'),
             adjustment: new Gtk.Adjustment({
                 lower: 16,
                 upper: 32,
@@ -303,8 +339,8 @@ export default class PinBarPreferences extends ExtensionPreferences {
         appearance.add(iconSizeRow);
 
         const runningRow = new Adw.SwitchRow({
-            title: 'Running indicator',
-            subtitle: 'Show a small dot under running applications.',
+            title: _('Running indicator'),
+            subtitle: _('Show a small dot under running applications.'),
             active: this._settings.get_boolean('show-running-indicator'),
         });
         runningRow.connect('notify::active', () => {
@@ -315,18 +351,18 @@ export default class PinBarPreferences extends ExtensionPreferences {
 
     _buildAboutPage(window) {
         const page = new Adw.PreferencesPage({
-            title: 'About',
+            title: _('About'),
             icon_name: 'help-about-symbolic',
         });
         window.add(page);
 
         const group = new Adw.PreferencesGroup({
             title: 'PinBar',
-            description: 'Pin favourite applications to the top panel. Search installed apps in Preferences and click an icon to launch or focus it.',
+            description: _('Pin favourite applications to the top panel. Search installed apps in Preferences and click an icon to launch or focus it.'),
         });
         page.add(group);
 
-        group.add(new Adw.ActionRow({ title: 'Version', subtitle: this.metadata['version-name'] }));
-        group.add(new Adw.ActionRow({ title: 'Author', subtitle: 'lisanlbou@work_in_progress' }));
+        group.add(new Adw.ActionRow({title: _('Version'), subtitle: this.metadata['version-name']}));
+        group.add(new Adw.ActionRow({title: _('Author'), subtitle: 'lisanlbou@work_in_progress'}));
     }
 }
